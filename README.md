@@ -11,7 +11,7 @@
 * Filter options and functions can be defined for each object property being tested
 * Custom filter functions
 * Variables in the pattern objects
-
+ 
 ## Examples
 
 Filter an array of objects:
