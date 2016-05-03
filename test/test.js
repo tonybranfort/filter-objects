@@ -1232,7 +1232,7 @@ describe('When makeFilterFn is called', function() {
       var props = ["tail.color"]; 
       var f = fos.makeFilterFn(props,options);
 
-      var pObj = {tail: {color: /gray/}}; 
+      var pObj = {tail: {color: 'gray'}}; 
       var tObjs = [
           {type: "dog", paws: {count: 4}, tail: {count: 1, color: "black"}},
           {type: "rabbit", paws: {count: 3}, tail: {count: 1, color: "white"}},
