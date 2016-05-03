@@ -1,0 +1,35 @@
+{
+  "name": "filter-objects",
+  "version": "1.0.0",
+  "description": "Filter an array of objects with deep properties",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "make test",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonybranfort/filter-objects"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coveralls": "2.11.x",
+    "faker": "3.x",
+    "istanbul": "0.4.x",
+    "jstat": "1.x",
+    "mocha": "2.x",
+    "mocha-lcov-reporter": "^1.0.0",
+    "should": "7.x"
+  },
+  "keywords": [
+    "object",
+    "compare",
+    "regex",
+    "filter",
+    "objects"
+  ],
+  "author": "Tony Branfort",
+  "license": "MIT"
+}
