@@ -1,7 +1,6 @@
 # filter-objects.js
 [![Build Status via Travis CI](https://travis-ci.org/tonybranfort/filter-objects.svg?branch=master)](https://travis-ci.org/tonybranfort/filter-objects)
-[![NPM version](http://img.shields.io/npm/v/filter-objects.svg)](https://www.npmjs.org/package/filter-objects)
-[![Coverage Status](https://coveralls.io/repos/tonybranfort/filter-objects/badge.svg?branch=master&service=github)](https://coveralls.io/github/tonybranfort/filter-objects?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/tonybranfort/filter-objects/badge.svg?branch=master)](https://coveralls.io/github/tonybranfort/filter-objects?branch=master)
 
 ###Filters an array of objects and supports: 
 * Defining filter properties & options prior to filter call for better performance

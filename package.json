@@ -28,7 +28,10 @@
     "compare",
     "regex",
     "filter",
-    "objects"
+    "objects",
+    "deep",
+    "properties",
+    "property"
   ],
   "author": "Tony Branfort",
   "license": "MIT"
