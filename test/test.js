@@ -1226,6 +1226,26 @@ describe('When makeFilterFn is called', function() {
          {type: "lizard", paws: {count: 0}, tail: {color: "GREY"}}
         ]); 
   });
+  it('it should filter target objects containing regular expressions' + 
+    'when regExpReverse is true', function() {
+      var options = {regExpMatch: true, regExpReverse: true};
+      var props = ["tail.color"]; 
+      var f = fos.makeFilterFn(props,options);
+
+      var pObj = {tail: {color: /gray/}}; 
+      var tObjs = [
+          {type: "dog", paws: {count: 4}, tail: {count: 1, color: "black"}},
+          {type: "rabbit", paws: {count: 3}, tail: {count: 1, color: "white"}},
+          {type: "cat", paws: {count: 4}, tail: {color: "gray"}},
+          {type: "lizard", paws: {count: 0}, tail: {color: /gr.y/}},
+      ]; 
+      f(pObj, tObjs).should.match(
+        [{type: "cat", paws: {count: 4}, tail: {color: "gray"}},
+         {type: "lizard", paws: {count: 0}, tail: {color: /gr.y/}}
+        ]); 
+  });
+
+
 }); 
 
 describe('When filter is called', function() {
