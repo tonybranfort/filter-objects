@@ -575,7 +575,7 @@ function writeOverallSummary(tests) {
     fosv: 8,
     platform: 14,
     nodev: 9,
-    t: 5,          //all test result time cols
+    t: 6,          //all test result time cols
     filename: 80  
   };
 
@@ -637,7 +637,7 @@ function writeOverallSummary(tests) {
     addCol(' ', colWidths.fosv);
     addCol(' ', colWidths.platform, ALIGN_CENTER);
     addCol(' ', colWidths.nodev, ALIGN_CENTER);
-    addCol(' RESPONSE TIMES: 95th Percentile per property* (milliseconds; .001 microsecond) =>',200,ALIGN_LEFT);
+    addCol(' RESPONSE TIMES: 95th Percentile per property* in milliseconds (.001 microseconds) =>',200,ALIGN_LEFT);
     addCol('\n');
     addCol('fos v', colWidths.fosv, ALIGN_CENTER);
     addCol('platform', colWidths.platform, ALIGN_CENTER);
@@ -718,7 +718,7 @@ function writeOverallSummary(tests) {
       addCol(' ',colWidths.t);
       namesIndex++;
     }
-    addCol(getTestPq95MillS(test).toFixed(1), colWidths.t, ALIGN_RIGHT);
+    addCol(getTestPq95MillS(test).toFixed(2), colWidths.t, ALIGN_RIGHT);
 
     // increment namesIndex unless we've cycled through all, then reset 
     namesIndex = namesIndex === testNames.length -1 ? 0 : namesIndex + 1;

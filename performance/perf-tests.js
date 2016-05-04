@@ -28,7 +28,6 @@ var reference = {
   m100: "100% match between pObjs & tObjs",
   v100to100: "volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1",
   v1kto1k: "volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1",
-  v1kto10k: "volume 1,000: 1,000 unique pObj objects against 10,000 unique tObj objects; filter tests filter each pObj to 10k tObjs; match tests go 1:1",
   v10kto10k: "volume 10,000: 10k unique pObj objects against 10k unique tObj objects; filter tests filter each pObj to 10k tObjs; match tests go 1:1",
   v100kto100k: "volume 100,000: 100k unique pObj objects against 100k unique tObj objects; filter tests filter each pObj to 10pk tObjs; match tests go 1:1",
 };
@@ -392,16 +391,16 @@ var perfTests =
     },
     testFn: 'testFilter' 
   },
-  {
-    testName: 'filter_k10to100_m50_v1kto10k',
-    tObj: {
-      fileName:'k100_randObj_v1k.json'
-    },
-    pObj: {
-      fileName:'k100_randObj_v10k_k10_m50.json' 
-    },
-    testFn: 'testFilter' 
-  },
+  // {
+  //   testName: 'filter_k10to100_m50_v10kto10k',
+  //   tObj: {
+  //     fileName:'k100_randObj_v10k.json'
+  //   },
+  //   pObj: {
+  //     fileName:'k100_randObj_v10k_k10_m50.json' 
+  //   },
+  //   testFn: 'testFilter' 
+  // },
 
   {
     testName: 'filter_k100to100_m100_v100to100',
