@@ -1,0 +1,308 @@
+|        |              |         | RESPONSE TIMES: 95th Percentile per property* in milliseconds (.001 microseconds) =>                                                                                                                   |
+| fos v  |   platform   | node v  | af1  | af2  |  f1  |  f2  |  f3  |  f4  |  f5  |  f6  |  f7  |  f8  |  f9  | f10  | f11  | f12  | f13  | f14  | ms1  | ms2  | ms3  | ms4  |  m1  |  m2  |  m3  |  m4  |  m5  |  m6  |  m7  |  m8  |  m9  | m10  | m11  | m12  | rm1  | rm2  | rm3  | rm4  | rm5  | rm6  | rm7  | rm8  |Filename (test grouping)                                                        |
+|--------|--------------|---------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|--------------------------------------------------------------------------------|
+| 1.0.0  | node-v4.2.4  |  4.2.4  |  0.07|  0.16|  0.10|  0.50|  0.76|  1.09|  8.83| 16.09| 10.74| 14.35|  4.41| 12.10|  2.90| 10.91|  1.58|  2.41| 90.14| 74.24| 96.68| 65.20|  5.18|  4.75|  6.74|  6.52| 16.23| 18.80|  5.67|  5.86|  5.94|  5.33| 15.85|  2.78| 24.72| 21.23| 23.38| 22.73| 18.10|  4.99|  7.75|  4.70|2016-05-04_linux_v1.0.0_node-v4.2.4_v100to1k_1462371919682.json                 |
+| 1.0.0  | node-v4.2.4  |  4.2.4  |  0.07|  0.15|  0.09|  0.48|      |  0.44|  6.82|  6.98|  1.40|  3.27|  4.19|  4.72|  2.18|  2.54|  1.57|  1.33| 79.36| 72.27| 72.35| 61.19|  4.89|  7.31|  6.27| 13.12| 14.40| 12.80|  3.57|  3.21|  3.18|  2.70|  4.14|  2.56| 31.71| 22.93| 27.10| 20.88| 12.76|  4.64|  9.12|  7.42|2016-05-04_linux_v1.0.0_node-v4.2.4_v100to1k_1462375423391.json                 |
+| 1.0.0  | node-v4.2.4  |  4.2.4  |  0.39|  0.16|  0.09|  0.45|      |  0.44|  7.91|  8.68|  1.48|  3.25|  4.18|  4.70|  2.34|  2.58|  2.02|  1.37|143.57| 73.30| 77.56| 12.15|  4.76|  4.80|  6.41|  5.89| 11.89| 12.84|  3.56|  5.73|  6.82|  5.14|  3.60|  2.70| 24.37|  4.38| 30.97| 21.52|  6.01|  7.24|  9.93|  7.06|2016-05-04_linux_v1.0.0_node-v4.2.4_v100to1k_1462375708099.json                 |
+| 1.0.0  | node-v5.4.1  |  5.4.1  |  0.07|  0.19|  2.97| 29.07|      |  5.85|293.11| 68.47| 31.45| 33.56|290.21| 64.49|288.26| 32.69|  5.43| 30.50|161.12|143.54|113.10|112.95|291.27|291.33|  9.04| 14.16| 23.87| 23.33|  4.97|  4.50|  3.98|  4.44|  6.84|  7.15| 26.10|  6.17| 36.90| 35.72| 19.74| 12.24| 17.74| 14.26|2016-05-04_linux_v1.0.0_node-v5.4.1_v100to1k_1462374039464.json                 |
+| 1.0.0  | node-v5.4.1  |  5.4.1  |  0.07| 21.59|  2.14| 21.15|      |  4.23|210.03| 48.33| 22.22| 47.89|208.48| 45.60|206.67| 23.49|101.56| 23.84|175.62|135.23|134.04|114.03|209.08|209.11|  8.66|  7.97| 22.51| 23.17|  6.54|  4.41|  4.83|  3.89|  5.52|  4.10| 28.26| 28.02| 47.03| 34.80| 10.79|  9.15| 54.38|  7.35|2016-05-04_linux_v1.0.0_node-v5.4.1_v100to1k_1462375050307.json                 |
+| 1.0.0  | node-v5.4.1  |  5.4.1  |  0.07|  0.15|  0.11|  0.55|      |  0.50|  8.83|  8.39|  1.91|  3.49|  5.36|  5.60|  3.67|  3.44| 10.40|  1.97|117.47|121.45|106.58|122.14|  5.93|  8.36|  8.20|  8.51| 20.55| 16.38|  5.88|  5.78|  4.50|  3.40|  6.45|  4.23| 33.83| 27.75| 35.58| 34.34| 18.97|  7.74|  9.15| 19.71|2016-05-04_linux_v1.0.0_node-v5.4.1_v100to1k_1462375495815.json                 |
+| 1.0.0  |    win32     |  4.4.3  |  0.09|  0.18|  0.11|  0.54|  0.49|  0.45|  9.48| 16.01|  2.44| 13.97|  6.45|  4.70|  4.73|  3.88|  3.14|  2.19|121.55|141.13| 76.50| 84.87|  6.38|  6.18| 10.21| 12.78| 15.51| 14.61|  9.56|  6.16| 11.14|  5.92|  8.62|  9.08| 70.66| 31.43| 31.30| 26.69|  8.14|  9.47|  9.47| 12.87|2016-05-04_win32_v1.0.0_node-v4.4.3_v100to1k_1462370209476.json                 |
+| 1.0.0  |    win32     |  4.4.3  |  0.54|  1.91|  0.11|  0.68|      |  0.49|  9.57| 12.77|  2.09|  8.45|  6.81|  4.83|  6.51|  2.57|  2.95|  3.18|141.08| 87.97|127.86| 95.14|  9.93|  7.03|  6.38|  6.58| 16.58| 17.76|  7.74| 12.24|  6.56|  8.29| 11.47| 11.05| 23.07| 63.95| 51.56| 30.79| 13.23| 13.42|  4.34| 13.82|2016-05-04_win32_v1.0.0_node-v4.4.3_v100to1k_1462376151333.json                 |
+| 1.0.0  |    win32     |  4.4.3  |  0.08|  2.15|  0.15|  0.62|      |  0.45|  8.27|  9.63|  3.76|  4.42|  4.60|  4.58|  4.54|  3.89|  3.30|  2.32| 77.49| 94.98| 12.57|108.41|  7.34|  7.63| 12.09|  6.70| 23.44| 12.24|  8.23| 11.05|  6.16|  3.55|  3.95| 10.90| 19.19| 21.16| 34.37| 35.13| 18.55|  9.08| 12.08|  5.92|2016-05-04_win32_v1.0.0_node-v4.4.3_v100to1k_1462376212649.json                 |
+
+Response times are the 95th percentile (95% of responses are faster) for all matches or filters 
+performed for each test shown divided by the number of properties being checked for a match. 
+This allows a consistent way of looking at response times across all tests regardless if a match was for one property or 1000.
+
+For example a match test of 5 properties tested 100 times: 
+  If 95 of the tests responded in 20.0 milliseconds or faster, (regardless of whether match was true or false)
+  then the number displayed here would be 4.0 (20.0 / 5 properties.)
+
+af1 : filterJsArray_k1to100_fixedKey_k1d_v1kto1k
+af2 : filterJsArray_k1to100_fixedKey_k4d_v1kto1k
+f1 : filter_k100to100_m100_v100to100
+f2 : filter_k10to100_m50_v100to100
+f3 : filter_k10to100_m50_v10kto10k
+f4 : filter_k10to100_m50_v1kto1k
+f5 : filter_k1to100_charDotStar_v1kto100
+f6 : filter_k1to100_charDotStar_v1kto1k
+f7 : filter_k1to100_fixedKey_k1d_v1kto1k
+f8 : filter_k1to100_fixedKey_k4d_v1kto1k
+f9 : filter_k1to100_m50_v100to100
+f10 : filter_k1to100_m50_v1kto1k
+f11 : filter_k1to1_pRegDotStar_tWord_m50_v100to100
+f12 : filter_k1to1_pRegDotStar_tWord_m50_v1kto1k
+f13 : filter_k1to1_pWord_tWord_m50_v100to100
+f14 : filter_k1to1_pWord_tWord_m50_v1kto1k
+ms1 : matchSimple_k1to100_m50_v100to100
+ms2 : matchSimple_k1to100_m50_v1kto1k
+ms3 : matchSimple_k1to1_pWord_tWord_m50_v100to100
+ms4 : matchSimple_k1to1_pWord_tWord_m50_v1kto1k
+m1 : match_k100to100_m100_v100to100
+m2 : match_k100to100_m100_v1kto1k
+m3 : match_k10to100_m50_v100to100
+m4 : match_k10to100_m50_v1kto1k
+m5 : match_k1to100_m50_v100to100
+m6 : match_k1to100_m50_v1kto1k
+m7 : match_k1to1_pParagraph_tParagraph_m50_v100to100
+m8 : match_k1to1_pParagraph_tParagraph_m50_v1kto1k
+m9 : match_k1to1_pString_tString_m50_v100to100
+m10 : match_k1to1_pString_tString_m50_v1kto1k
+m11 : match_k1to1_pWord_tWord_m50_v100to100
+m12 : match_k1to1_pWord_tWord_m50_v1kto1k
+rm1 : regMatch_k1to1_pRegDotStar_tWord_m50_v100to100
+rm2 : regMatch_k1to1_pRegDotStar_tWord_m50_v1kto1k
+rm3 : regMatch_k1to1_pRegDot_tWord_m50_v100to100
+rm4 : regMatch_k1to1_pRegDot_tWord_m50_v1kto1k
+rm5 : regMatch_k1to1_pRegMidStr_tWord_m50_v100to100
+rm6 : regMatch_k1to1_pRegMidStr_tWord_m50_v1kto1k
+rm7 : regMatch_k1to1_pRegPhone_tPhone_m50_v100to100
+rm8 : regMatch_k1to1_pRegPhone_tPhone_m50_v1kto1k
+
+
+af1 : filterJsArray_k1to100_fixedKey_k1d_v1kto1k
+   filterJsArr => filter test using straight js array filter without filter-objects
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   fixedKey    => Every object in array of pObjs tests the same property key (but different value for each pObj & tObj)
+   k1d         => Property key is 1 level deep
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+af2 : filterJsArray_k1to100_fixedKey_k4d_v1kto1k
+   filterJsArr => filter test using straight js array filter without filter-objects
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   fixedKey    => Every object in array of pObjs tests the same property key (but different value for each pObj & tObj)
+   k4d         => Property key is 4 levels deep; eg type.tail.tip.color
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f1 : filter_k100to100_m100_v100to100
+   filter      => filter test using makeFilterFn()
+   k100to100   => 100 pObj properties matched against 100 tObj props in tObj of 100 properties
+   m100        => 100% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+f2 : filter_k10to100_m50_v100to100
+   filter      => filter test using makeFilterFn()
+   k10to100    => 10 pObj properties matched against 10 tObj props in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+f3 : filter_k10to100_m50_v10kto10k
+   filter      => filter test using makeFilterFn()
+   k10to100    => 10 pObj properties matched against 10 tObj props in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v10kto10k   => volume 10,000: 10k unique pObj objects against 10k unique tObj objects; filter tests filter each pObj to 10k tObjs; match tests go 1:1
+f4 : filter_k10to100_m50_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k10to100    => 10 pObj properties matched against 10 tObj props in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f5 : filter_k1to100_charDotStar_v1kto100
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   charDotStar => reg exp=>1 rand char followed by .* by 1 rand char eg /B.*l/
+   v1kto100    => null
+f6 : filter_k1to100_charDotStar_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   charDotStar => reg exp=>1 rand char followed by .* by 1 rand char eg /B.*l/
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f7 : filter_k1to100_fixedKey_k1d_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   fixedKey    => Every object in array of pObjs tests the same property key (but different value for each pObj & tObj)
+   k1d         => Property key is 1 level deep
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f8 : filter_k1to100_fixedKey_k4d_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   fixedKey    => Every object in array of pObjs tests the same property key (but different value for each pObj & tObj)
+   k4d         => Property key is 4 levels deep; eg type.tail.tip.color
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f9 : filter_k1to100_m50_v100to100
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+f10 : filter_k1to100_m50_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f11 : filter_k1to1_pRegDotStar_tWord_m50_v100to100
+   filter      => filter test using makeFilterFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDotStar => pObj has reg exp 1 rand char followed by .* by rand char eg /B.*l/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+f12 : filter_k1to1_pRegDotStar_tWord_m50_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDotStar => pObj has reg exp 1 rand char followed by .* by rand char eg /B.*l/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+f13 : filter_k1to1_pWord_tWord_m50_v100to100
+   filter      => filter test using makeFilterFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+f14 : filter_k1to1_pWord_tWord_m50_v1kto1k
+   filter      => filter test using makeFilterFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+ms1 : matchSimple_k1to100_m50_v100to100
+   matchSimple => match test calling matches() directly withou creating makeMatchFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+ms2 : matchSimple_k1to100_m50_v1kto1k
+   matchSimple => match test calling matches() directly withou creating makeMatchFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+ms3 : matchSimple_k1to1_pWord_tWord_m50_v100to100
+   matchSimple => match test calling matches() directly withou creating makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+ms4 : matchSimple_k1to1_pWord_tWord_m50_v1kto1k
+   matchSimple => match test calling matches() directly withou creating makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m1 : match_k100to100_m100_v100to100
+   match       => match test using match from create makeMatchFn()
+   k100to100   => 100 pObj properties matched against 100 tObj props in tObj of 100 properties
+   m100        => 100% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m2 : match_k100to100_m100_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k100to100   => 100 pObj properties matched against 100 tObj props in tObj of 100 properties
+   m100        => 100% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m3 : match_k10to100_m50_v100to100
+   match       => match test using match from create makeMatchFn()
+   k10to100    => 10 pObj properties matched against 10 tObj props in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m4 : match_k10to100_m50_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k10to100    => 10 pObj properties matched against 10 tObj props in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m5 : match_k1to100_m50_v100to100
+   match       => match test using match from create makeMatchFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m6 : match_k1to100_m50_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k1to100     => 1 pObj property matched against 1 tObj prop in tObj of 100 properties
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m7 : match_k1to1_pParagraph_tParagraph_m50_v100to100
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pParagraph  => pObj is a string of of 5-200 'words' of random 3-10 chars seperated by spaces
+   tParagraph  => pObj is a string of of 5-200 'words' of random 3-10 chars seperated by spaces
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m8 : match_k1to1_pParagraph_tParagraph_m50_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pParagraph  => pObj is a string of of 5-200 'words' of random 3-10 chars seperated by spaces
+   tParagraph  => pObj is a string of of 5-200 'words' of random 3-10 chars seperated by spaces
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m9 : match_k1to1_pString_tString_m50_v100to100
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pString     => pObj is a string of 30 to 150 random characters
+   tString     => tObj is a string of 30 to 150 random characters
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m10 : match_k1to1_pString_tString_m50_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pString     => pObj is a string of 30 to 150 random characters
+   tString     => tObj is a string of 30 to 150 random characters
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+m11 : match_k1to1_pWord_tWord_m50_v100to100
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+m12 : match_k1to1_pWord_tWord_m50_v1kto1k
+   match       => match test using match from create makeMatchFn()
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pWord       => 3 to 10 random characters in pObj value
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+rm1 : regMatch_k1to1_pRegDotStar_tWord_m50_v100to100
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDotStar => pObj has reg exp 1 rand char followed by .* by rand char eg /B.*l/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+rm2 : regMatch_k1to1_pRegDotStar_tWord_m50_v1kto1k
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDotStar => pObj has reg exp 1 rand char followed by .* by rand char eg /B.*l/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+rm3 : regMatch_k1to1_pRegDot_tWord_m50_v100to100
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDot     => pObj has one character replaced with . for reg exp test
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+rm4 : regMatch_k1to1_pRegDot_tWord_m50_v1kto1k
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegDot     => pObj has one character replaced with . for reg exp test
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+rm5 : regMatch_k1to1_pRegMidStr_tWord_m50_v100to100
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegMidStr  => pObj has a random number of consecutive characters from tObj string; eg /anke/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+rm6 : regMatch_k1to1_pRegMidStr_tWord_m50_v1kto1k
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegMidStr  => pObj has a random number of consecutive characters from tObj string; eg /anke/
+   tWord       => 3 to 10 random characters in tObj value
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+rm7 : regMatch_k1to1_pRegPhone_tPhone_m50_v100to100
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegPhone   => pObj is a regular expression that tests for phone format
+   tPhone      => tObj is a phone number of various possible accepted formats
+   m50         => ~50% match between pObjs & tObjs
+   v100to100   => volume 100: 100 unique pObj objects, 100 unique tObj objects; filter tests filter each pObj to 100 tObjs; match tests go 1:1
+rm8 : regMatch_k1to1_pRegPhone_tPhone_m50_v1kto1k
+   regMatch    => regular expression match test
+   k1to1       => 1 pObj property matched to tObj with 1 property
+   pRegPhone   => pObj is a regular expression that tests for phone format
+   tPhone      => tObj is a phone number of various possible accepted formats
+   m50         => ~50% match between pObjs & tObjs
+   v1kto1k     => volume 1,000: 1,000 unique pObj objects against 1,000 unique tObj objects; filter tests filter each pObj to 1000 tObjs; match tests go 1:1
+
