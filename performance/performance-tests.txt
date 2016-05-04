@@ -1,0 +1,95 @@
+Each performance test should record
+* Test number
+* Envrionment (server,os, etc)
+* Date
+* Total time for test
+* Git commit number or tag
+* Data files
+* Test script name
+
+Test preconditions: 
+ * Restart server before each test (confirm if this really is necessary)
+ * No other other non-system processes running
+
+In match tests below, array of pObjs & tObjs 
+   Where each pObj[i] is tested to match against its respective tObj[i].
+   2 tests: 
+      1. "matchSimple" : Simple Match (don't create match function first) & Match (create)
+      2. "match" : (makeMatchFn called first & then resulting match fn called)
+
+   Volumes: 
+    .v100to100   =>  100 match tests using array of 100 pObj & tObjs
+    .v1kto1k     =>  1k match tests using array of 1,000 pObj & tObjs
+    .v100kto100k => match tests using Array of 100,000 pObj & tObjs
+
+Object Properties (keys)
+  .k1to1_m50 test
+      * Single property for both pObj & tObj
+      * pObj[i] : tObj[i] => 50% possibility of match between pObj & tObj
+
+  .k1to100_m50 test
+      * Single property for pObj,
+      * "randObj" 100 properties for tObj, max property depth of 10
+      * pObj[i] : tObj[i] => 50% possibility of match between pObj & tObj
+
+  .k10to100_m50 => 10 props for pObj / 100 props for tObj
+      * pObj[i] : tObj[i] => 50% possibility of match between pObj & tObj
+
+  .k100to100_m100 => 100 props for pObj / 100 props for tObj
+      * pObj[i] : tObj[i] => 100% match between pObj & tObj
+
+  .k1to100_m50_e20 => missing prpoperties match test
+      * Single property for pObj,
+      * 100 properties for tObj
+      * 50% possibility of match between pObj & tObj
+      * 20% possibility of match property missing in tObj
+
+For each of the above: 
+    * word : Single word match - 
+        3 to 10 random characters 
+        pWord_tWord => in both tObj & pObj
+    * string : Long character string - 
+        Single string randomly ranging from 30 chars to 150 chars
+        pString_tString => in both tObj & pObj 
+    * paragraph :  Multi word string - 
+        String from 5 to 200 words of 3 to 10 random characters
+        pPara_tPara => in both tObj & pObj
+    * regExpO : Reg-exp object 
+         pReO_tWord => 
+            pObj RegExp object as outlined below, 
+            tObj Single word string (3 to 10 random chars) 
+         pReO_tPara => 
+            pObj RegExp object as outlined below, 
+            tObj paragraph as outlined above  
+         pObj is RegExp object with these random characteristics
+            - 25%: regMidStr: Random number of consecutive characters from tObj string; eg /anke/
+            - 25%: regDot: One character replaced with "."; eg /ba.ker/
+            - 25%: regDotStar: Random number of consecutive characters replaced with .*; eg; /b.*r/ 
+            - 25%: regPhone: Test using reg expression test of phone number
+                //http://stackoverflow.com/questions/123559/a-comprehensive-regex-for-phone-number-validation#123681
+    * Not for each but: 
+      * phone: random integers in format of (999)999-9999
+
+Replace variable test
+    .r1to1 replace single word, getVariables has one variable 
+    .r5to100 replace 5 words in each object, getVariables has 100 variables.
+    * Every match test has a successful replace variable in pObj
+
+Filter tests
+  Filtering tObjs: 
+    each pObj[i] is used to filter the entire tObj array.    
+      ft100   => filter tObjs with one pObj and 100 tObjs
+      ft1k    => filter tObjs with one pObj and 1k tObjs
+      ft100k  => filter tObjs with one pObj and 10k tObjs
+    each tObj[i] is used to filter the entire pObj array.  
+    (this should only vary from above when pObj has reg exp)  
+      fp100   => filter tObjs with one tObj and 100 pObjs
+      fp1k    => filter tObjs with one tObj and 1k pObjs
+      fp100k  => filter tObjs with one tObj and 10k pObjs
+
+      tObjs that have fixed object keys for all but values vary
+        => 100 tObjs : k100_fixedKey_v100, pObj 1 key
+
+
+
+
