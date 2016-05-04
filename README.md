@@ -9,7 +9,7 @@
 * Filter with regular expressions - on either the searching object or objects in the array
 * Filter options and functions can be defined for each object property being tested
 * Custom filter functions
-* Variables in the pattern objects
+* Variables in the pattern and target objects
 
 Install with `npm install filter-objects'.
  
@@ -93,7 +93,7 @@ Tested on latest versions of Node 0.10, 0.12, 4 and 5.
 * [`regExpMatch`](#regExpMatch) (Plus several related reg exp options)
 * [`matchIfPObjPropMissing`](#matchIfPObjPropMissing)
 * [`matchIfTObjPropMissing`](#matchIfPObjPropMissing)
-* [`variablesAllowed`](#variablesAllowed)
+* [variables](#variables) (`variablesInPObj`, `variablesInTObj`)
 * [`propMatchFn`](#propMatchFn)
 
 <a name="filter"></a>
@@ -298,7 +298,10 @@ var options = {
   matchIfPObjPropMissing: false,  // matches if `pObj` property doesn't exist
   matchIfTObjPropMissing: false,  // matches if `tObj` property doesn't exist
 
+  //variablesAllowed DEPRECATED. Replaced with variablesInPObj, variablesInTObj
   variablesAllowed: false,  // replace var names with var values in `pObj` props 
+  variablesInPObj: false,   // substitute variables in prop value in pattern obj
+  variablesInTObj: false,   // substitute variables in prop value in target obj
   getVariables: undefined,  // function to call to get object of var names/vals
   variablesStartStr: '~',   // beg str in pObj prop value to find the var name  
   variablesEndStr: null,    // end str in pObj prop value to find the var name
@@ -548,8 +551,8 @@ var request = {path: '/pets?role=guarddog', breed: 'chihuahua'}
 ```
 
 
-##### <a name="variablesAllowed" />variablesAllowed
-Property on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` property values with their respective variable values from [`getVariables`](#getVariables).  The varible names on the `pObj` property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
+##### <a name="variables" />variables (`variablesInPObj`, `variablesInTObj`)
+`variablesInPObj` and `variablesInTObj` are properties on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` &/or `tObj` property values respectively with their respective variable values from [`getVariables`](#getVariables).  The varible names on the property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
   - valid values: `true`,`false`
   - default: `false`
 
@@ -567,7 +570,7 @@ var fido ={
 
 var options =  
     {regExpMatch: true,
-     variablesAllowed:true,
+     variblesInPObj:true,
      variablesStartStr:"~",
      variablesEndStr: "#",
      getVariables:  function(cb) {
@@ -584,30 +587,46 @@ var matchFn = fos.makeMatchFn(propsToTest, options);
 
 matchFn(pObj, fido) // true;
 
-// and works the same with `filter` for an array of objects
+// Or substitue variables in both pObj and tObj
+
+var options =  
+  {getVariables:  function(cb) {
+    return cb(null, {youngDog: "puppy", littleCuteUn: "puppy"}); 
+  }};
+
+var props = 
+  {"prop1":
+    {"variablesInTObj":true,
+     "variablesInPObj":true,
+     "variablesStartStr":"/:"}};
+var pObj = {"prop1":"/:littleCuteUn"};
+var tObj = {"prop1":"/:youngDog"};
+var f = fos.makeMatchFn(props, options);
+f(pObj, tObj);  //true
+
 
 ```
 
 ##### <a name="getVariables" />getVariables
-Property on the [`options`](#options) object that defines a function which, if [`variablesAllowed`](#variablesAllowed) is `true`, takes a callback which is called with an error (null if no error) and an object of the form : 
+Property on the [`options`](#options) object that defines a function which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, takes a callback which is called with an error (null if no error) and an object of the form : 
 
 ```javascript
 {variable1Name: `variable1Value`,
   variable2Name: `variable2Value`}
 ```
 
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variablesInPObj`](#variablesInPObj) for an example.
 
 ##### <a name="variablesStartStr" />variablesStartStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesAllowed`](#variablesAllowed) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
 
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variablesInPObj`](#variablesInPObj) for an example.
 
 
 ##### <a name="variablesEndStr" />variablesEndStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesAllowed`](#variablesAllowed) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
 
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variables`](#variables) for examples.
 
 
 ##### <a name="propMatchFn" />propMatchFn
