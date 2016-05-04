@@ -1,4 +1,4 @@
-|        |              |         | RESPONSE TIMES: 95th Percentile per property* in milliseconds (.001 microseconds) =>                                                                                                                   |
+|        |              |         | RESPONSE TIMES: 95th Percentile per property* in microseconds (.001 milliseconds) =>                                                                                                                   |
 | fos v  |   platform   | node v  | af1  | af2  |  f1  |  f2  |  f3  |  f4  |  f5  |  f6  |  f7  |  f8  |  f9  | f10  | f11  | f12  | f13  | f14  | ms1  | ms2  | ms3  | ms4  |  m1  |  m2  |  m3  |  m4  |  m5  |  m6  |  m7  |  m8  |  m9  | m10  | m11  | m12  | rm1  | rm2  | rm3  | rm4  | rm5  | rm6  | rm7  | rm8  |Filename (test grouping)                                                        |
 |--------|--------------|---------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|--------------------------------------------------------------------------------|
 | 1.0.0  | node-v4.2.4  |  4.2.4  |  0.07|  0.16|  0.10|  0.50|  0.76|  1.09|  8.83| 16.09| 10.74| 14.35|  4.41| 12.10|  2.90| 10.91|  1.58|  2.41| 90.14| 74.24| 96.68| 65.20|  5.18|  4.75|  6.74|  6.52| 16.23| 18.80|  5.67|  5.86|  5.94|  5.33| 15.85|  2.78| 24.72| 21.23| 23.38| 22.73| 18.10|  4.99|  7.75|  4.70|2016-05-04_linux_v1.0.0_node-v4.2.4_v100to1k_1462371919682.json                 |
@@ -16,7 +16,7 @@ performed for each test shown divided by the number of properties being checked 
 This allows a consistent way of looking at response times across all tests regardless if a match was for one property or 1000.
 
 For example a match test of 5 properties tested 100 times: 
-  If 95 of the tests responded in 20.0 milliseconds or faster, (regardless of whether match was true or false)
+  If 95 of the tests responded in 20.0 microseconds or faster, (regardless of whether match was true or false)
   then the number displayed here would be 4.0 (20.0 / 5 properties.)
 
 af1 : filterJsArray_k1to100_fixedKey_k1d_v1kto1k
