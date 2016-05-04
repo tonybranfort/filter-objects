@@ -637,7 +637,7 @@ function writeOverallSummary(tests) {
     addCol(' ', colWidths.fosv);
     addCol(' ', colWidths.platform, ALIGN_CENTER);
     addCol(' ', colWidths.nodev, ALIGN_CENTER);
-    addCol(' RESPONSE TIMES: 95th Percentile per property* in milliseconds (.001 microseconds) =>',200,ALIGN_LEFT);
+    addCol(' RESPONSE TIMES: 95th Percentile per property* in microseconds (.001 milliseconds) =>',200,ALIGN_LEFT);
     addCol('\n');
     addCol('fos v', colWidths.fosv, ALIGN_CENTER);
     addCol('platform', colWidths.platform, ALIGN_CENTER);
@@ -669,7 +669,7 @@ function writeOverallSummary(tests) {
       'This allows a consistent way of looking at response times ' + 
       'across all tests regardless if a match was for one property or 1000.\n\n' +
       'For example a match test of 5 properties tested 100 times: \n' + 
-      '  If 95 of the tests responded in 20.0 milliseconds or faster, ' +
+      '  If 95 of the tests responded in 20.0 microseconds or faster, ' +
       '(regardless of whether match was true or false)\n' + 
       '  then the number displayed here would be 4.0 (20.0 / 5 properties.)'; 
     rowStr = rowStr + '\n\n';
@@ -852,7 +852,7 @@ function getTestPq95(test) {
 }
 
 function getTestPq95MillS(test) {
-  // result in millisecond
+  // result in microsecond
   return getTestPq95(test)*1000; 
 }
 
