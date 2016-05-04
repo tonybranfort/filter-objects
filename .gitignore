@@ -1,5 +1,4 @@
 node_modules
-performance/data
 coverage
 *.log
 README.html
