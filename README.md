@@ -11,8 +11,10 @@
 * Custom filter functions
 * Variables in the pattern and target objects
 
-Install with `npm install filter-objects'.
- 
+Install with: 
+* `npm install filter-objects`
+* `bower install filter-objects`
+
 ## Examples
 
 ```javascript
