@@ -78,6 +78,9 @@ filter(pObj, tObjs);
 //  [{type: "cat", paws: {count: 4}, tail: {color: "gray"}},
 //   {type: "lizard", paws: {count: 0}, tail: {color: /gr.y/}}]
 
+// Properties to test do not cascade to include nested object properties so
+//   `propsToTest=['tail'] would not have the same result.  See propsToTest section.
+
 ```
 
 See [`performance`](#performance) section for performance info. 
@@ -90,8 +93,9 @@ Tested on latest versions of Node 0.10, 0.12, 4 and 5.
 * [`makeFilterFn`](#makeFilterFn)  
 * [`matches`](#matches) 
 * [`makeMatchFn`](#makeMatchFn)  
+* [`setNestedPropOptions`](#setNestedPropOptions)
 
-### [Options](#options)
+### [Options](#options) for `makeFilterFn` and `makeMatchFn`
 * [`regExpMatch`](#regExpMatch) (Plus several related reg exp options)
 * [`matchIfPObjPropMissing`](#matchIfPObjPropMissing)
 * [`matchIfTObjPropMissing`](#matchIfPObjPropMissing)
@@ -259,7 +263,7 @@ fos.matches(pObj, fido);  //true
 __"target object"__.  Any object that is passed into a [`matches`](#matches) or [`filter`](#filter) (as an array) function as the second parameter.  The target object or objects is/are the object(s) that is/are being tested against the pattern object to determine if it matches.  See notes and example  under [`pObj`](#pObj). 
 
 ### <a name="propsToTest" />propsToTest 
-An array or object that contains property names and their assigned [`options`](#options) values, if any.  Property names are strings and are in dot notation if nested; eg "tail.color" to identify the property in `{tail: {color: black}}`. 
+An array or object that contains property names and their assigned [`options`](#options) values, if any.  Property names are strings and are in dot notation if nested; eg "tail.color" to identify the property in `{tail: {color: black}}`.  Properties to test do __not__ cascade to include nested object properties; see caution note at bottom of this section. 
 
 Can take one of the following forms: 
 * an array of strings which are the property names to be tested.  `options` values cannot be specified for individual properties with this form.  Example: 
@@ -274,9 +278,15 @@ Can take one of the following forms:
   [{name: 'housetrained'}, {name: 'tail.color', regExpMatch: true}]
   ```
 
-* an array of combination of the above 2 (strings and objects). Example: 
+* an array of objects, one for each property to be tested, each with one key which is the property name and an options object as its value. Example: 
   ```javascript
-  ['housetrained', {name: 'tail.color', regExpMatch: true}]
+  // test using default options for housetrained; tail.color using reg exp match
+  [{'housetrained': {}}, {'tail.color': {regExpMatch: true}}]
+  ```
+
+* an array of combination of the above 3 (strings and objects). Example: 
+  ```javascript
+  ['housetrained', {name: 'tail.color', regExpMatch: true},{'paws':{regExpMatch: false}}]
   ```
 
 * an object with property names as keys and `options` objects as the values. Example: 
@@ -284,6 +294,8 @@ Can take one of the following forms:
   // test using default options for housetrained; tail.color using reg exp match
   {'housetrained':{}, 'tail.color': {regExpMatch: true}}
   ```
+
+__CAUTION:__ Every nested object property to be tested must be included in `propsToTest` if they are to be tested discretely; ie, properties to be tested are __not__ cascaded into nested objects.  For example: if the target object is `{name: 'fido',paws: {count: 4, color: 'black'}}`, including 'paws' in `propsToTest` does _not_ test paws.count and paws.color.  It simply will test the object {count:4, color: 'black'} using the test properties you have established so if it is a regExp test and the pattern object is {paws:'.\*color.\*'}, it _will_ match because the object is simply converted to a string.  To test the properties in paws, include 'paws.count' and 'paws.color' specifically in `propsToTest`.
 
 ### <a name="options" />options
 An object used to set the option values for match and filter functions.  
@@ -313,7 +325,7 @@ var options = {
 ```
 
 ##### <a name="regExpMatch" />regExpMatch
-Property on the [`options`](#options) object that if equal to `true`, fos filter and matches functions will use the `pObj` property value as a regular expression to test against the `tObj` property.  If the pattern object property value is a string, the string will be converted to a javascript regular expression.  
+Property on the [`options`](#options) object that if equal to `true`, `filter` and `matches` functions will use the `pObj` property value as a regular expression to test against the `tObj` property.  If the pattern object property value is a string, the string will be converted to a javascript regular expression.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -413,7 +425,7 @@ matchFn(pObj, fido);  // true
 ```
 
 ##### <a name="regExpAnchorStart" />regExpAnchorStart
-Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in fos matches and filter functions, it includes a '^' prepended to `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the ^ can be included in the regular expression; eg, /^gray/.  
+Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in matches and filter functions, it includes a '^' prepended to `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the ^ can be included in the regular expression; eg, /^gray/.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -437,7 +449,7 @@ var options = {regExpMatch: true}
 ```
 
 ##### <a name="regExpAnchorEnd" />regExpAnchorEnd
-Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in fos matches and filter functions, it includes a '$' appended to the end of the `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the $ can be included in the regular expression; eg, /gray$/.  
+Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in matches and filter functions, it includes a '$' appended to the end of the `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the $ can be included in the regular expression; eg, /gray$/.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -675,6 +687,40 @@ var filter = fos.makeFilterFn(propsToTest);
 
 filter(pObj, pets); 
   //matchedPets = {name: 'fido'..., name:'rover'...}; 
+
+```
+
+<a name="setNestedPropOptions"></a>
+#### setNestedPropOptions(propsToTest, propOptions)
+Modifies `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
+
+__Arguments__
+* [`propsToTest`](#propsToTest)
+* propOptions: A literal object with propNames as keys and [`options`](#options) as values.
+
+__Examples__
+```javascript
+var propsToTest = [
+  'method',
+  'query',
+  'query.filter',
+  {name:'query.limit', regExpMatch: false},
+  'query.filter.sort'];
+var propOptions = {
+  'query': {regExpMatch: true},  // cascade this option to all 'query.x' where isn't set on lower levels
+  'query.limit': {variablesInTObj: true}
+}; 
+
+var updatedProps = fos.setNestedPropOptions(propsToTest, propOptions); 
+
+console.log(updatedProps); 
+/*
+{ method: {},
+  query: { regExpMatch: true },
+  'query.filter': { regExpMatch: true },
+  'query.limit': { regExpMatch: false, variablesInTObj: true },
+  'query.filter.sort': { regExpMatch: true } }
+*/
 
 ```
 

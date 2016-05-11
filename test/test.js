@@ -15,8 +15,19 @@ describe('Create Compare function',function(){
   it('should return property definitions with an array of mix of strings & objects',function(){
       fos.getPropDefns(
         ["propA","propZ", 
-         {name: "wank", matchIfRulePropMissing: false}])
+         {name: "basket", regExpMatch: false}])
       .length.should.equal(3); 
+  }); 
+
+  it('should return property definitions with an array of objects with name as key',
+    function(){
+      var props = fos.getPropDefns(
+        ["propA","propZ", 
+         {"basket": {regExpMatch: true}}]); 
+      props.length.should.equal(3);
+      props[0].name.should.equal('propA'); 
+      props[2].regExpMatch.should.equal(true);  
+      props[2].name.should.equal('basket'); 
   }); 
 
   it('should create a function', function() {
@@ -1676,3 +1687,27 @@ describe('When filter is called', function() {
         ]); 
   });
 }); 
+
+describe('setNestedPropOptions', function() {
+  it('should correctly set options', function() {
+    var propsToTest = [
+      'method',
+      'query',
+      'query.filter',
+      {name:'query.limit', regExpMatch: false},
+      'query.filter.sort'];
+    var propOptions = {
+      'query': {regExpMatch: true},
+      'query.limit': {variablesInTObj: true}
+    }; 
+
+    var updatedProps = fos.setNestedPropOptions(propsToTest, propOptions); 
+
+    Object.keys(updatedProps).length.should.equal(5); 
+    updatedProps.query.regExpMatch.should.equal(true); 
+    updatedProps['query.filter'].regExpMatch.should.equal(true); 
+    updatedProps['query.filter.sort'].regExpMatch.should.equal(true); 
+    updatedProps['query.limit'].regExpMatch.should.equal(false); 
+    updatedProps['query.limit'].variablesInTObj.should.equal(true); 
+  });
+}); // end of describe for setNestedPropOptions 
