@@ -93,6 +93,9 @@ Tested on latest versions of Node 0.10, 0.12, 4, 5 and 6.
 * [`makeFilterFn`](#makeFilterFn)  
 * [`matches`](#matches) 
 * [`makeMatchFn`](#makeMatchFn)  
+
+### Helper functions
+* [`setOptionsOnProps`](#setOptionsOnProps)
 * [`setNestedPropOptions`](#setNestedPropOptions)
 
 ### [Options](#options) for `makeFilterFn` and `makeMatchFn`
@@ -690,9 +693,83 @@ filter(pObj, pets);
 
 ```
 
+<a name="setOptionsOnProps"></a>
+#### setOptionsOnProps(propsToTest, options)
+Helper function to modify the [`propsToTest`](#propsToTest) object setting options on each property. `setOptionsOnProps` is called by `makeFilterFn` and `makeMatchFn` so `setOptionsOnProps` does not need to be called prior to those.  `setOptionsOnProps` is exposed to see the options set for each property.  As noted in makeFilterFn and makeMatchFn, `options` precedence is (1) `propsToTest` `options` values if set (2) `options` as included here as a parameter, otherwise (3) `options` default values.  
+
+__Arguments__
+* [`propsToTest`](#propsToTest)
+* options: Object with any of [`options`](#options) properties.
+
+__Examples__
+```javascript
+var propsToTest = [
+  'method',
+  'query.filter',
+  {name:'query.limit', regExpMatch: false}];
+var options = {regExpMatch: true}; 
+
+var updatedProps = fos.setOptionsOnProps(propsToTest, options); 
+
+console.log(updatedProps); 
+/*
+[ { name: 'method',
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    variablesInPObj: false,
+    variablesInTObj: false,
+    getVariablesFn: undefined,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null,
+    regExpMatch: true },
+  { name: 'query.filter',
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    variablesInPObj: false,
+    variablesInTObj: false,
+    getVariablesFn: undefined,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null,
+    regExpMatch: true },
+  { name: 'query.limit',
+    regExpMatch: false,
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    variablesInPObj: false,
+    variablesInTObj: false,
+    getVariablesFn: undefined,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null } ]
+*/
+
+// Above can just be informational if needed or can be fed into makeFilterFn or makeMatchFn
+
+var filter = makeFilterFn(updatedProps);
+
+// which would have the same result as this: 
+var filter = makeFilterFn(propsToTest, options);
+
+
+```
+
 <a name="setNestedPropOptions"></a>
 #### setNestedPropOptions(propsToTest, propOptions)
-Modifies `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. propsToTest can then be used as input to makeFilterFn or makeMatchFn. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
+Helper function to modify `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. propsToTest can then be used as input to makeFilterFn or makeMatchFn. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
 
 __Arguments__
 * [`propsToTest`](#propsToTest)
