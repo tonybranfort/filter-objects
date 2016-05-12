@@ -1692,7 +1692,6 @@ describe('setNestedPropOptions', function() {
   it('should correctly set options', function() {
     var propsToTest = [
       'method',
-      'query',
       'query.filter',
       {name:'query.limit', regExpMatch: false},
       'query.filter.sort'];
@@ -1703,11 +1702,22 @@ describe('setNestedPropOptions', function() {
 
     var updatedProps = fos.setNestedPropOptions(propsToTest, propOptions); 
 
-    Object.keys(updatedProps).length.should.equal(5); 
-    updatedProps.query.regExpMatch.should.equal(true); 
-    updatedProps['query.filter'].regExpMatch.should.equal(true); 
-    updatedProps['query.filter.sort'].regExpMatch.should.equal(true); 
-    updatedProps['query.limit'].regExpMatch.should.equal(false); 
-    updatedProps['query.limit'].variablesInTObj.should.equal(true); 
+    Object.keys(updatedProps).length.should.equal(4); 
+    updatedProps.filter(function(prop) {
+      return prop.name === 'query.filter';
+    })[0].regExpMatch.should.equal(true);
+
+    updatedProps.filter(function(prop) {
+      return prop.name === 'query.filter.sort';
+    })[0].regExpMatch.should.equal(true); 
+    
+    updatedProps.filter(function(prop) {
+      return prop.name === 'query.limit';
+    })[0].regExpMatch.should.equal(false); 
+
+    updatedProps.filter(function(prop) {
+      return prop.name === 'query.limit';
+    })[0].variablesInTObj.should.equal(true); 
+
   });
 }); // end of describe for setNestedPropOptions 

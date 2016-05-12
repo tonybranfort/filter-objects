@@ -85,7 +85,7 @@ filter(pObj, tObjs);
 
 See [`performance`](#performance) section for performance info. 
 
-Tested on latest versions of Node 0.10, 0.12, 4 and 5. 
+Tested on latest versions of Node 0.10, 0.12, 4, 5 and 6. 
 
 ## API
 ### Match and Filter Functions
@@ -692,7 +692,7 @@ filter(pObj, pets);
 
 <a name="setNestedPropOptions"></a>
 #### setNestedPropOptions(propsToTest, propOptions)
-Modifies `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
+Modifies `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. propsToTest can then be used as input to makeFilterFn or makeMatchFn. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
 
 __Arguments__
 * [`propsToTest`](#propsToTest)
@@ -721,6 +721,15 @@ console.log(updatedProps);
   'query.limit': { regExpMatch: false, variablesInTObj: true },
   'query.filter.sort': { regExpMatch: true } }
 */
+
+var options = {regExpReverse: true}; 
+var filter = makeFilterFn(propsToTest, options);
+// filter will test properties in propsToTest with those options 
+//   and defaulting to regExpReverse to true across all of them 
+//  (so for all props in propsToTest because it isn't set in any of the properties)  
+//   Any option that isn't set in propsToTest or options will be set 
+//   according to global options default - see options section. 
+...
 
 ```
 
