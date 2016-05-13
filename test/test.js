@@ -536,6 +536,33 @@ describe('When the makeMatchFn is used , ', function(){
           var f = fos.makeMatchFn(props);
           f(pObj, tObj).should.equal(false);
       });
+    it('should return false if a chosen poperty is missing in tObj ' + 
+       'including when regExpMatch and pObj has .*', 
+       function() {
+          var options = {
+            regExpMatch:true, 
+            // matchIfTObjMissing: false   // default is false
+          }; 
+          var props = ["prop1",'prop2.cat.tail'];
+          var pObj = {"prop1":"abc","prop2":{"cat":{"tail":".*"}}};
+          var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+          var f = fos.makeMatchFn(props,options);
+          f(pObj, tObj).should.equal(false);
+      });
+    it('should return false if a chosen poperty is missing in pObj ' + 
+       'including when regExpMatch, regExpReverse and tObj has .*', 
+       function() {
+          var options = {
+            regExpMatch:true, 
+            regExpReverse:true, 
+            // matchIfPObjMissing: false   // default is false
+          }; 
+          var props = ["prop1",'prop2.cat.tail'];
+          var pObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+          var tObj = {"prop1":"abc","prop2":{"cat":{"tail":".*"}}};
+          var f = fos.makeMatchFn(props, options);
+          f(pObj, tObj).should.equal(false);
+      });
     it('it should return false if a chosen poperty is missing in both objects', 
       function() {
         var props = ["prop1","prop2"];
