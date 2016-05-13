@@ -979,6 +979,46 @@ describe('When the makeMatchFn is used , ', function(){
         var f = fos.makeMatchFn(props, options);
         f(pObj, tObj).should.equal(true);
     });
+    it('it should replace multiple occurances of different variables', 
+      function() {
+        // var props = {"prop1":{"variablesInPObj":true,"variablesStartStr":"+"}};
+        var props = {
+          "prop1":{"variablesInPObj":true,
+            "variablesEndStr":"~",
+            "variablesStartStr":"+"
+          }
+        };
+        var options = 
+          {getVariables:  function(cb) {
+            return cb(null, 
+            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
+          }};
+        var pObj = {"prop1":"+youngDog~WHAT+youngCat~"};
+        var tObj = {"prop1":"puppyWHATkitten"};
+        var f = fos.makeMatchFn(props, options);
+        f(pObj, tObj).should.equal(true);
+    });
+
+    it('it should replace multiple occurances of different variables', 
+      function() {
+        // var props = {"prop1":{"variablesInPObj":true,"variablesStartStr":"+"}};
+        var props = {
+          "prop1":{"variablesInPObj":true,
+            "variablesEndStr":"~",
+            "variablesStartStr":"~"
+          }
+        };
+        var options = 
+          {getVariables:  function(cb) {
+            return cb(null, 
+            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
+          }};
+        var pObj = {"prop1":"~youngDog~WHAT~youngCat~"};
+        var tObj = {"prop1":"puppyWHATkitten"};
+        var f = fos.makeMatchFn(props, options);
+        f(pObj, tObj).should.equal(true);
+    });
+    
     it('it should allow the variablesInPObj to be set in options to affect ' + 
        'all property definitions', 
        function() {
