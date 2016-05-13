@@ -314,6 +314,7 @@ var options = {
 
   matchIfPObjPropMissing: false,  // matches if `pObj` property doesn't exist
   matchIfTObjPropMissing: false,  // matches if `tObj` property doesn't exist
+  matchIfBothPropMissing: false,  // match on this property if BOTH tObj & pObj are missing
 
   //variablesAllowed DEPRECATED. Replaced with variablesInPObj, variablesInTObj
   variablesAllowed: false,  // replace var names with var values in `pObj` props 
@@ -564,6 +565,68 @@ filter(request, pets);
 
 var request = {path: '/pets?role=guarddog', breed: 'chihuahua'}
 // [ { name: 'growler'...} ]
+
+```
+
+##### <a name="matchIfBothPropMissing" />matchIfBothPropMissing
+Property on the [`options`](#options) object that if equal to `true`, `filter` and `matches` functions will return `true`for the given property's match test if the property being tested does not exist on BOTH `pObj` and `tObj`. 
+  - valid values: `true`,`false`
+  - default: `false`
+
+If `matchIfTObjMissing` &/or `matchIfPObjMissing` is set to `true`, then the match will still return `true` if either the tObj or pObj property is missing, respectively, even if both are not missing. 
+
+Example: 
+
+```javascript
+it('should return true if properties missing in both pObj & tObj', 
+  function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        // matchIfTObjPropMissing: false   // default is false
+        // matchIfPObjPropMissing: false   // default is false
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(true); 
+  });
+
+it('should return false if property exists in either pObj & tObj' + 
+   'and matchIf_ObjPropMissing is false', function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        // matchIfTObjPropMissing: false   // default is false
+        // matchIfPObjPropMissing: false   // default is false
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"tail":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(false);
+
+      pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      tObj = {"prop1":"abc","prop2":{"cat":{"tail":"brown"}}};
+      f(pObj, tObj).should.equal(false);
+  });
+
+it('should return true if property exists in either pObj & tObj' + 
+   'and matchIf_ObjPropMissing is true', function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        matchIfTObjPropMissing: true,   
+        matchIfPObjPropMissing: true   
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"tail":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(true);
+
+      pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      tObj = {"prop1":"abc","prop2":{"cat":{"tail":"brown"}}};
+      f(pObj, tObj).should.equal(true);
+  });
 
 ```
 
