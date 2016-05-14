@@ -316,11 +316,10 @@ var options = {
   matchIfTObjPropMissing: false,  // matches if `tObj` property doesn't exist
   matchIfBothPropMissing: false,  // match on this property if BOTH tObj & pObj are missing
 
-  //variablesAllowed DEPRECATED. Replaced with variablesInPObj, variablesInTObj
   variablesAllowed: false,  // replace var names with var values in `pObj` props 
   variablesInPObj: false,   // substitute variables in prop value in pattern obj
   variablesInTObj: false,   // substitute variables in prop value in target obj
-  getVariables: undefined,  // function to call to get object of var names/vals
+  variables: {},            // object of variables with var names as keys
   variablesStartStr: '~',   // beg str in pObj prop value to find the var name  
   variablesEndStr: null,    // end str in pObj prop value to find the var name
 
@@ -632,7 +631,7 @@ it('should return true if property exists in either pObj & tObj' +
 
 
 ##### <a name="variables" />variables (`variablesInPObj`, `variablesInTObj`)
-`variablesInPObj` and `variablesInTObj` are properties on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` &/or `tObj` property values respectively with their respective variable values from [`getVariables`](#getVariables).  The varible names on the property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
+`variablesInPObj` and `variablesInTObj` are properties on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` &/or `tObj` property values respectively with their respective variable values from [`variables`](#variables).  The varible names on the property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
   - valid values: `true`,`false`
   - default: `false`
 
@@ -650,18 +649,18 @@ var fido ={
 
 var options =  
     {regExpMatch: true,
-     variblesInPObj:true,
-     variablesStartStr:"~",
-     variablesEndStr: "#",
-     getVariables:  function(cb) {
-       return cb(null, {grayColor: /gr[a,e]y/}); 
-    }};
+     variablesInPObj:true, 
+     variablesStartStr:"+",
+     variablesEndStr: ":",
+     variables: {grayColor: /gr[a,e]y/i}
+    };
+
 
 // variable name is identified between variablesStartStr(~) and variablesEndStr(#)
-//   and replaced with that name from getVariables (grayColor => /gr[a,e]y/)
-var pObj = {paws:{color: '~grayColor#'},tail:{color:'~grayColor#'}};  
+//   and replaced with that name from variables (grayColor => /gr[a,e]y/)
+var pObj = {paws:{color: '+grayColor:'}, tail:{color: '+grayColor:'}};  
 
-var propsToTest = ['paws.color', 'tail.color'];
+var propsToTest = ['paws.color','tail.color'];
 
 var matchFn = fos.makeMatchFn(propsToTest, options);
 
@@ -669,10 +668,7 @@ matchFn(pObj, fido) // true;
 
 // Or substitue variables in both pObj and tObj
 
-var options =  
-  {getVariables:  function(cb) {
-    return cb(null, {youngDog: "puppy", littleCuteUn: "puppy"}); 
-  }};
+var options =  {variables:  {youngDog: "puppy", littleCuteUn: "puppy"}};
 
 var props = 
   {"prop1":
@@ -687,24 +683,19 @@ f(pObj, tObj);  //true
 
 ```
 
-##### <a name="getVariables" />getVariables
-Property on the [`options`](#options) object that defines a function which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, takes a callback which is called with an error (null if no error) and an object of the form : 
-
-```javascript
-{variable1Name: `variable1Value`,
-  variable2Name: `variable2Value`}
-```
+##### <a name="variables" />variables
+Property on the [`options`](#options) object that defines the variable names and values.
 
 See [`variablesInPObj`](#variablesInPObj) for an example.
 
 ##### <a name="variablesStartStr" />variablesStartStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`variables`](#variables). 
 
 See [`variablesInPObj`](#variablesInPObj) for an example.
 
 
 ##### <a name="variablesEndStr" />variablesEndStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`variables`](#variables). 
 
 See [`variables`](#variables) for examples.
 
@@ -783,9 +774,10 @@ console.log(updatedProps);
     regExpAnchorEnd: false,
     matchIfPObjPropMissing: false,
     matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
     variablesInPObj: false,
     variablesInTObj: false,
-    getVariablesFn: undefined,
     variablesStartStr: '~',
     variablesEndStr: null,
     propMatchFn: null,
@@ -797,9 +789,10 @@ console.log(updatedProps);
     regExpAnchorEnd: false,
     matchIfPObjPropMissing: false,
     matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
     variablesInPObj: false,
     variablesInTObj: false,
-    getVariablesFn: undefined,
     variablesStartStr: '~',
     variablesEndStr: null,
     propMatchFn: null,
@@ -812,9 +805,10 @@ console.log(updatedProps);
     regExpAnchorEnd: false,
     matchIfPObjPropMissing: false,
     matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
     variablesInPObj: false,
     variablesInTObj: false,
-    getVariablesFn: undefined,
     variablesStartStr: '~',
     variablesEndStr: null,
     propMatchFn: null } ]

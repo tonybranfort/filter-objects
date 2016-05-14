@@ -742,15 +742,14 @@ describe('When the makeMatchFn is used , ', function(){
     });
   }); // end of For deep properties (more than one deep)
 
+
   describe('For properties with variables', function(){
     it('it should replace the variable and return true for match', 
       function() {
         var props = 
           {"prop1":{"variablesInPObj":true,"variablesStartStr":"/:"}};
         var options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":"/:youngDog"};
         var tObj = {"prop1":"puppy"};
         var f = fos.makeMatchFn(props, options);
@@ -759,9 +758,7 @@ describe('When the makeMatchFn is used , ', function(){
         props = 
           {"prop1":{"variablesInTObj":true,"variablesStartStr":"/:"}};
         options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         tObj = {"prop1":"/:youngDog"};
         pObj = {"prop1":"puppy"};
         f = fos.makeMatchFn(props, options);
@@ -773,9 +770,7 @@ describe('When the makeMatchFn is used , ', function(){
              "variablesInPObj":true,
              "variablesStartStr":"/:"}};
         options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy", littleCuteUn: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy", littleCuteUn: "puppy"}};
         tObj = {"prop1":"/:youngDog"};
         pObj = {"prop1":"/:littleCuteUn"};
         f = fos.makeMatchFn(props, options);
@@ -787,9 +782,7 @@ describe('When the makeMatchFn is used , ', function(){
         var props = 
           {"prop1":{"variablesInPObj":true,"variablesStartStr":"/:"}};
         var options =               
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":"/:youngDog"};
         var tObj = {"prop1":"kitten"};
         var f = fos.makeMatchFn(props, options);
@@ -805,18 +798,14 @@ describe('When the makeMatchFn is used , ', function(){
         props = 
           {"prop1":{"variablesInTObj":true,"variablesStartStr":"/:"}};
         options =               
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         pObj = {"prop1":"kitten"};
         tObj = {"prop1":"/:youngDog"};
         f = fos.makeMatchFn(props, options);
         f(pObj, tObj).should.equal(false);
 
         options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy", littleCuteUn: "bitey"}); 
-          }};
+          {variables: {youngDog: "puppy", littleCuteUn: "bitey"}};
 
         props = 
           {"prop1":
@@ -835,9 +824,7 @@ describe('When the makeMatchFn is used , ', function(){
         var props = 
           {"prop1":{"variablesInPObj":true}};
         var options =               
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":"~youngDog"};
         var tObj = {"prop1":"puppy"};
         var f = fos.makeMatchFn(props, options);
@@ -848,9 +835,7 @@ describe('When the makeMatchFn is used , ', function(){
         var props = 
           {"prop1":{"variablesInPObj":true,"variablesStartStr":":::"}};
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":":::youngDog"};
         var tObj = {"prop1":"puppy"};
         var f = fos.makeMatchFn(props, options);
@@ -861,9 +846,7 @@ describe('When the makeMatchFn is used , ', function(){
       function() {
         var props = {"prop1":{"variablesInPObj":true,"variablesStartStr":"+"}};
         var options =      
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":"+youngDog"};
         var tObj = {"prop1":"puppy"};
         var f = fos.makeMatchFn(props, options);
@@ -871,9 +854,7 @@ describe('When the makeMatchFn is used , ', function(){
 
         props = {"prop1":{"variablesInTObj":true,"variablesStartStr":"+"}};
         options =      
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables: {youngDog: "puppy"}};
         pObj = {"prop1":"puppy"};
         tObj = {"prop1":"+youngDog"};
         f = fos.makeMatchFn(props, options);
@@ -885,9 +866,7 @@ describe('When the makeMatchFn is used , ', function(){
              {"variablesInPObj":true,
               "variablesInTObj":true,"variablesStartStr":"+"}};
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy",littleCuteUn:"puppy"}); 
-          }};
+          {variables: {youngDog: "puppy",littleCuteUn:"puppy"}};
         var pObj = {"prop1":"+youngDog+youngDog"};
         var tObj = {"prop1":"+youngDog+littleCuteUn"};
         var f = fos.makeMatchFn(props, options);
@@ -897,9 +876,7 @@ describe('When the makeMatchFn is used , ', function(){
       function() {
         var props = {"prop1":{"variablesInPObj":true,"variablesStartStr":"+"}};
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-        }};
+          {variables: {youngDog: "puppy"}};
         var pObj = {"prop1":"cute+youngDog"};
         var tObj = {"prop1":"cutepuppy"};
         var f = fos.makeMatchFn(props, options);
@@ -914,9 +891,7 @@ describe('When the makeMatchFn is used , ', function(){
                "variablesStartStr":"~",
                "variablesEndStr":"~"}};
           var options = 
-            {getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy"}); 
-            }};
+            {variables: {youngDog: "puppy"}};
           var pObj = {"prop1":"~youngDog~cat"};
           var tObj = {"prop1":"puppycat"};
           var f = fos.makeMatchFn(props, options);
@@ -932,9 +907,7 @@ describe('When the makeMatchFn is used , ', function(){
                "variablesStartStr":"~",
                "variablesEndStr":"+"}};
           var options = 
-            {getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy",meow: "cat"}); 
-            }};
+            {variables: {youngDog: "puppy",meow: "cat"}};
           var pObj = {"prop1":"~youngDog+cat"};
           var tObj = {"prop1":"puppy~meow+"};
           var f = fos.makeMatchFn(props, options);
@@ -949,9 +922,7 @@ describe('When the makeMatchFn is used , ', function(){
                "variablesStartStr":"~",
                "variablesEndStr":"+"}};
           var options = 
-            {getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy",meow: "cat"}); 
-            }};
+            {variables: {youngDog: "puppy",meow: "cat"}}; 
           var pObj = {"prop1":"~youngDog+cat"};
           var tObj = {"prop1":"puppy~meow+"};
           var f = fos.makeMatchFn(props, options);
@@ -970,10 +941,7 @@ describe('When the makeMatchFn is used , ', function(){
       function() {
         var props = {"prop1":{"variablesInPObj":true,"variablesStartStr":"+"}};
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
-          }};
+          {variables: {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}};
         var pObj = {"prop1":"+youngDog+youngCat+youngSheep"};
         var tObj = {"prop1":"puppykittenewe"};
         var f = fos.makeMatchFn(props, options);
@@ -989,10 +957,7 @@ describe('When the makeMatchFn is used , ', function(){
           }
         };
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
-          }};
+          {variables: {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}};
         var pObj = {"prop1":"+youngDog~WHAT+youngCat~"};
         var tObj = {"prop1":"puppyWHATkitten"};
         var f = fos.makeMatchFn(props, options);
@@ -1009,10 +974,7 @@ describe('When the makeMatchFn is used , ', function(){
           }
         };
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
-          }};
+          {variables: {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}};
         var pObj = {"prop1":"~youngDog~WHAT~youngCat~"};
         var tObj = {"prop1":"puppyWHATkitten"};
         var f = fos.makeMatchFn(props, options);
@@ -1024,8 +986,7 @@ describe('When the makeMatchFn is used , ', function(){
        function() {
           var props = ["prop1.cat","prop2.dog.paw"];
           var options = 
-            {getVariables:  function(cb) {
-              return cb(null,{colorWhite: "white", colorGray: "gray"}); },
+            {variables: {colorWhite: "white", colorGray: "gray"},
               variablesInPObj:true, 
               variablesStartStr: '+'
             };
@@ -1042,8 +1003,7 @@ describe('When the makeMatchFn is used , ', function(){
        function() {
           var props = ["prop1.cat"];
           var options = 
-            {getVariables:  function(cb) {
-              return cb(null,{colorGray: "gr.y", grayLit: "gray"}); },
+            {variables: {colorGray: "gr.y", grayLit: "gray"},
               regExpMatch: true,
               variablesInPObj:true, 
               variablesInTObj:true, 
@@ -1061,10 +1021,7 @@ describe('When the makeMatchFn is used , ', function(){
       function() {
         var props = ["prop1","prop2","prop3","prop4","prop5.init"];
         var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-              {testVarStr1: "puppy", testVarStr2: "cat",anotherVar:"worm"}); 
-          },
+          {variables: {testVarStr1: "puppy", testVarStr2: "cat",anotherVar:"worm"},
           variablesInPObj:true, 
           variablesStartStr: '+',
           regExpMatch: true
@@ -1092,15 +1049,13 @@ describe('When the makeMatchFn is used , ', function(){
           {"prop1":
             {"variablesInPObj":true,
              "variablesStartStr":"/:",
-             getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy"}); 
-            }},
+             variables: {youngDog: "puppy"}
+            },
            "prop2":
             {"variablesInPObj":true,
              "variablesStartStr":"/:",
-             getVariables:  function(cb) {
-              return cb(null, {youngDog: "koinu"}); 
-            }}
+             variables: {youngDog: "koinu"} 
+            }
           };
         var f = fos.makeMatchFn(props);
 
@@ -1114,8 +1069,7 @@ describe('When the makeMatchFn is used , ', function(){
          function() {
             var props = ["prop1.cat"];
             var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
+              {variables: {colorGray: /gr.y/i},
               regExpMatch: true,
               variablesInPObj:true, 
               variablesStartStr: '+'
@@ -1132,8 +1086,7 @@ describe('When the makeMatchFn is used , ', function(){
          'even when variablesEndStr is included', function() {
             var props = ["prop1.cat"];
             var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
+              {variables: {colorGray: /gr.y/i},
               regExpMatch: true,
               variablesInPObj:true, 
               variablesStartStr: '+',
@@ -1151,8 +1104,7 @@ describe('When the makeMatchFn is used , ', function(){
          'if the pObj value is not a var name only',function() {
             var props = ["prop1.cat"];
             var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
+              {variables: {colorGray: /gr.y/i},
               regExpMatch: true,
               variablesInPObj:true, 
               variablesStartStr: '+',
@@ -1166,295 +1118,8 @@ describe('When the makeMatchFn is used , ', function(){
               {"prop1": {"cat":"bl/gr.y/iwh"}};
             f(pObj, tObj).should.equal(true);
       }); //end of it
-    }); // end of when the pObj value is the variable name only...
-  }); // end of For properties with variablesAllowed=true
-
-  // variablesAllowed is DEPRECATED.  This describe is being kept until removed. 
-  describe('For properties with variablesAllowed=true', function(){
-    it('it should replace the variable and return true for match', 
-      function() {
-        var props = 
-          {"prop1":{"variablesAllowed":true,"variablesStartStr":"/:"}};
-        var options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":"/:youngDog"};
-        var tObj = {"prop1":"puppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should replace the variable and return false for non-match', 
-      function() {
-        var props = 
-          {"prop1":{"variablesAllowed":true,"variablesStartStr":"/:"}};
-        var options =               
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":"/:youngDog"};
-        var tObj = {"prop1":"kitten"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(false);
-    });
-    it('it should default the start string to ~', 
-      function() {
-        var props = 
-          {"prop1":{"variablesAllowed":true}};
-        var options =               
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":"~youngDog"};
-        var tObj = {"prop1":"puppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow other variablesStartStr', 
-      function() {
-        var props = 
-          {"prop1":{"variablesAllowed":true,"variablesStartStr":":::"}};
-        var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":":::youngDog"};
-        var tObj = {"prop1":"puppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow other variablesStartStr that include ' + 
-      'reserved regExp characters', 
-      function() {
-        var props = {"prop1":{"variablesAllowed":true,"variablesStartStr":"+"}};
-        var options =      
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":"+youngDog"};
-        var tObj = {"prop1":"puppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should replace all occurances of the variable', 
-      function() {
-        var props = {"prop1":{"variablesAllowed":true,"variablesStartStr":"+"}};
-        var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
-        var pObj = {"prop1":"+youngDog+youngDog"};
-        var tObj = {"prop1":"puppypuppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow string values prior to the variable name', 
-      function() {
-        var props = {"prop1":{"variablesAllowed":true,"variablesStartStr":"+"}};
-        var options = 
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-        }};
-        var pObj = {"prop1":"cute+youngDog"};
-        var tObj = {"prop1":"cutepuppy"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow string values immediately after the variable ' + 
-       'if variablesEndStr is defined', 
-       function() {
-          var props = 
-            {"prop1":
-              {"variablesAllowed":true,
-               "variablesStartStr":"~",
-               "variablesEndStr":"~"}};
-          var options = 
-            {getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy"}); 
-            }};
-          var pObj = {"prop1":"~youngDog~cat"};
-          var tObj = {"prop1":"puppycat"};
-          var f = fos.makeMatchFn(props, options);
-          f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow string values immediately after the variable ' + 
-       'if variablesEndStr is defined with a different character', 
-       function() {
-          var props = 
-            {"prop1":
-              {"variablesAllowed":true,
-               "variablesStartStr":"~",
-               "variablesEndStr":"+"}};
-          var options = 
-            {getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy"}); 
-            }};
-          var pObj = {"prop1":"~youngDog+cat"};
-          var tObj = {"prop1":"puppycat"};
-          var f = fos.makeMatchFn(props, options);
-          f(pObj, tObj).should.equal(true);
-    });
-    it('it should replace multiple occurances of different variables', 
-      function() {
-        var props = {"prop1":{"variablesAllowed":true,"variablesStartStr":"+"}};
-        var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-            {youngDog: "puppy", youngCat: "kitten", youngSheep:"ewe"}); 
-          }};
-        var pObj = {"prop1":"+youngDog+youngCat+youngSheep"};
-        var tObj = {"prop1":"puppykittenewe"};
-        var f = fos.makeMatchFn(props, options);
-        f(pObj, tObj).should.equal(true);
-    });
-    it('it should allow the variablesAllowed to be set in options to affect ' + 
-       'all property definitions', 
-       function() {
-          var props = ["prop1.cat","prop2.dog.paw"];
-          var options = 
-            {getVariables:  function(cb) {
-              return cb(null,{colorWhite: "white", colorGray: "gray"}); },
-              variablesAllowed:true, 
-              variablesStartStr: '+'
-            };
-          var pObj = 
-            {"prop1": {"cat":"+colorGray"},
-             "prop2":{"dog":{"paw":"+colorWhite"}}};
-          var tObj = 
-            {"prop1": {"cat":"gray"},
-             "prop2": {"dog":{"paw":"white"}}};
-          var f = fos.makeMatchFn(props, options);
-          f(pObj, tObj).should.equal(true);
-      });
-    it('it should match with a regular expression (as a string) ',
-       function() {
-          var props = ["prop1.cat"];
-          var options = 
-            {getVariables:  function(cb) {
-              return cb(null,{colorGray: "gr.y"}); },
-              regExpMatch: true,
-              variablesAllowed:true, 
-              variablesStartStr: '+'
-            };
-          var f = fos.makeMatchFn(props, options);
-
-          var pObj = 
-            {"prop1": {"cat":"+colorGray"}};
-          var tObj = 
-            {"prop1": {"cat":"gray"}};
-          f(pObj, tObj).should.equal(true);
-      });
-    it('it should not error if a property value is not a string', 
-      function() {
-        var props = ["prop1","prop2","prop3","prop4","prop5.init"];
-        var options = 
-          {getVariables:  function(cb) {
-            return cb(null, 
-              {testVarStr1: "puppy", testVarStr2: "cat",anotherVar:"worm"}); 
-          },
-          variablesAllowed:true, 
-          variablesStartStr: '+',
-          regExpMatch: true
-         };
-        var f = fos.makeMatchFn(props, options);
-
-        var imundefined; 
-        var pObj = 
-          {prop1:2,
-           prop2:null,
-           prop3: imundefined, 
-           prop4:/a/,
-           prop5:{"init":573}};
-        var tObj = 
-          {prop1:2,
-           prop2:null,
-           prop3: imundefined, 
-           prop4:"abc",
-           prop5:{"init":573}};
-        f(pObj, tObj).should.equal(true);
-      });
-    it('it should allow getVariables fn for each property', 
-      function() {
-        var props = 
-          {"prop1":
-            {"variablesAllowed":true,
-             "variablesStartStr":"/:",
-             getVariables:  function(cb) {
-              return cb(null, {youngDog: "puppy"}); 
-            }},
-           "prop2":
-            {"variablesAllowed":true,
-             "variablesStartStr":"/:",
-             getVariables:  function(cb) {
-              return cb(null, {youngDog: "koinu"}); 
-            }}
-          };
-        var f = fos.makeMatchFn(props);
-
-        var pObj = {"prop1":"/:youngDog", "prop2": "/:youngDog"};
-        var tObj = {"prop1":"puppy", "prop2": "koinu"};
-        f(pObj, tObj).should.equal(true);
-    });
-    describe('when the pObj value is the variable name only and ' + 
-        'the variable value is an object', function() {
-      it('it should replace the variable name with the object',
-         function() {
-            var props = ["prop1.cat"];
-            var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
-              regExpMatch: true,
-              variablesAllowed:true, 
-              variablesStartStr: '+'
-              };
-            var f = fos.makeMatchFn(props, options);
-
-            var pObj = 
-              {"prop1": {"cat":"+colorGray"}};
-            var tObj = 
-              {"prop1": {"cat":"graY"}};
-            f(pObj, tObj).should.equal(true);
-      }); //end of it
-      it('it should replace the variable name with the object ' + 
-         'even when variablesEndStr is included', function() {
-            var props = ["prop1.cat"];
-            var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
-              regExpMatch: true,
-              variablesAllowed:true, 
-              variablesStartStr: '+',
-              variablesEndStr: ':'
-              };
-            var f = fos.makeMatchFn(props, options);
-
-            var pObj = 
-              {"prop1": {"cat":"+colorGray:"}};
-            var tObj = 
-              {"prop1": {"cat":"graY"}};
-            f(pObj, tObj).should.equal(true);
-      }); //end of it
-      it('it should replace the variable name with the object as a string ' + 
-         'if the pObj value is not a var name only',function() {
-            var props = ["prop1.cat"];
-            var options = 
-              {getVariables:  function(cb) {
-                return cb(null,{colorGray: /gr.y/i}); },
-              regExpMatch: true,
-              variablesAllowed:true, 
-              variablesStartStr: '+',
-              variablesEndStr: ':'
-              };
-            var f = fos.makeMatchFn(props, options);
-
-            var pObj = 
-              {"prop1": {"cat":"bl+colorGray:wh"}};
-            var tObj = 
-              {"prop1": {"cat":"bl/gr.y/iwh"}};
-            f(pObj, tObj).should.equal(true);
-      }); //end of it
-    }); // end of when the pObj value is the variable name only...
-  }); // end of For properties with variablesAllowed=true
+    }); // end of describe when the pObj value is the variable name only...
+  }); // end of describe
 
   describe('When a custom match function is defined ', 
     function() {
@@ -1527,11 +1192,9 @@ describe('When the makeMatchFn is used , ', function(){
     it('should not be changed when variables are replaced', 
       function() {
         var props = 
-          {"prop1":{"variablesAllowed":true,"variablesStartStr":"/:"}};
+          {"prop1":{"variablesInPObj":true,"variablesStartStr":"/:"}};
         var options =  
-          {getVariables:  function(cb) {
-            return cb(null, {youngDog: "puppy"}); 
-          }};
+          {variables:  {youngDog: "puppy"}};
         var pObj = {"prop1":"/:youngDog"};
         var tObj = {"prop1":"puppy"};
         var f = fos.makeMatchFn(props, options);
@@ -1724,11 +1387,9 @@ describe('When makeFilterFn is called', function() {
     function() {
       var options =  
           {regExpMatch: true,
-           variablesAllowed:true,
+           variablesInPObj:true,
            variablesStartStr:"~",
-           getVariables:  function(cb) {
-             return cb(null, {grayColor: /gr.y/i}); 
-           }};
+           variables:  {grayColor: /gr.y/i}}; 
       var props = ["tail.color"]; 
       var f = fos.makeFilterFn(props,options);
 
