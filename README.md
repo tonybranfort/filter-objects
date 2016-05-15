@@ -2,10 +2,12 @@
 [![Build Status via Travis CI](https://travis-ci.org/tonybranfort/filter-objects.svg?branch=master)](https://travis-ci.org/tonybranfort/filter-objects)
 [![Coverage Status](https://coveralls.io/repos/github/tonybranfort/filter-objects/badge.svg?branch=master)](https://coveralls.io/github/tonybranfort/filter-objects?branch=master)
 
-###Filters an array of objects and supports: 
-* Defining filter properties & options prior to filter call for better performance
-* Deep object property testing
+###Use a pattern object to simply filter an array of objects or match on a single object.  
+
+Features: 
 * Simple 'pattern object' approach eg: `filter({fido: color: 'black'},arrayOfPetObjs)`
+* Deep object property testing
+* Can define filter properties & options prior to filter call for better performance
 * Filter with regular expressions - on either the searching object or objects in the array
 * Filter options and functions can be defined for each object property being tested
 * Custom filter functions
