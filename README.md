@@ -2,18 +2,23 @@
 [![Build Status via Travis CI](https://travis-ci.org/tonybranfort/filter-objects.svg?branch=master)](https://travis-ci.org/tonybranfort/filter-objects)
 [![Coverage Status](https://coveralls.io/repos/github/tonybranfort/filter-objects/badge.svg?branch=master)](https://coveralls.io/github/tonybranfort/filter-objects?branch=master)
 
-###Filters an array of objects and supports: 
-* Defining filter properties & options prior to filter call for better performance
-* Deep object property testing
+###Use a pattern object to simply filter an array of objects or match on a single object.  
+
+Features: 
 * Simple 'pattern object' approach eg: `filter({fido: color: 'black'},arrayOfPetObjs)`
+* Deep object property testing
+* Can define filter properties & options prior to filter call for better performance
 * Filter with regular expressions - on either the searching object or objects in the array
 * Filter options and functions can be defined for each object property being tested
 * Custom filter functions
-* Variables in the pattern objects
- 
+* Variables in the pattern and target objects
+
+Install with: 
+* `npm install filter-objects`
+* `bower install filter-objects`
+
 ## Examples
 
-Filter an array of objects:
 ```javascript
 // find which pets have 4 paws
 var fos = require('filter-objects');
@@ -75,7 +80,14 @@ filter(pObj, tObjs);
 //  [{type: "cat", paws: {count: 4}, tail: {color: "gray"}},
 //   {type: "lizard", paws: {count: 0}, tail: {color: /gr.y/}}]
 
+// Properties to test do not cascade to include nested object properties so
+//   `propsToTest=['tail'] would not have the same result.  See propsToTest section.
+
 ```
+
+See [`performance`](#performance) section for performance info. 
+
+Tested on latest versions of Node 0.10, 0.12, 4, 5 and 6. 
 
 ## API
 ### Match and Filter Functions
@@ -84,11 +96,15 @@ filter(pObj, tObjs);
 * [`matches`](#matches) 
 * [`makeMatchFn`](#makeMatchFn)  
 
-### [Options](#options)
+### Helper functions
+* [`setOptionsOnProps`](#setOptionsOnProps)
+* [`setNestedPropOptions`](#setNestedPropOptions)
+
+### [Options](#options) for `makeFilterFn` and `makeMatchFn`
 * [`regExpMatch`](#regExpMatch) (Plus several related reg exp options)
 * [`matchIfPObjPropMissing`](#matchIfPObjPropMissing)
 * [`matchIfTObjPropMissing`](#matchIfPObjPropMissing)
-* [`variablesAllowed`](#variablesAllowed)
+* [variables](#variables) (`variablesInPObj`, `variablesInTObj`)
 * [`propMatchFn`](#propMatchFn)
 
 <a name="filter"></a>
@@ -252,7 +268,7 @@ fos.matches(pObj, fido);  //true
 __"target object"__.  Any object that is passed into a [`matches`](#matches) or [`filter`](#filter) (as an array) function as the second parameter.  The target object or objects is/are the object(s) that is/are being tested against the pattern object to determine if it matches.  See notes and example  under [`pObj`](#pObj). 
 
 ### <a name="propsToTest" />propsToTest 
-An array or object that contains property names and their assigned [`options`](#options) values, if any.  Property names are strings and are in dot notation if nested; eg "tail.color" to identify the property in `{tail: {color: black}}`. 
+An array or object that contains property names and their assigned [`options`](#options) values, if any.  Property names are strings and are in dot notation if nested; eg "tail.color" to identify the property in `{tail: {color: black}}`.  Properties to test do __not__ cascade to include nested object properties; see caution note at bottom of this section. 
 
 Can take one of the following forms: 
 * an array of strings which are the property names to be tested.  `options` values cannot be specified for individual properties with this form.  Example: 
@@ -267,9 +283,15 @@ Can take one of the following forms:
   [{name: 'housetrained'}, {name: 'tail.color', regExpMatch: true}]
   ```
 
-* an array of combination of the above 2 (strings and objects). Example: 
+* an array of objects, one for each property to be tested, each with one key which is the property name and an options object as its value. Example: 
   ```javascript
-  ['housetrained', {name: 'tail.color', regExpMatch: true}]
+  // test using default options for housetrained; tail.color using reg exp match
+  [{'housetrained': {}}, {'tail.color': {regExpMatch: true}}]
+  ```
+
+* an array of combination of the above 3 (strings and objects). Example: 
+  ```javascript
+  ['housetrained', {name: 'tail.color', regExpMatch: true},{'paws':{regExpMatch: false}}]
   ```
 
 * an object with property names as keys and `options` objects as the values. Example: 
@@ -277,6 +299,8 @@ Can take one of the following forms:
   // test using default options for housetrained; tail.color using reg exp match
   {'housetrained':{}, 'tail.color': {regExpMatch: true}}
   ```
+
+__CAUTION:__ Every nested object property to be tested must be included in `propsToTest` if they are to be tested discretely; ie, properties to be tested are __not__ cascaded into nested objects.  For example: if the target object is `{name: 'fido',paws: {count: 4, color: 'black'}}`, including 'paws' in `propsToTest` does _not_ test paws.count and paws.color.  It simply will test the object {count:4, color: 'black'} using the test properties you have established so if it is a regExp test and the pattern object is {paws:'.\*color.\*'}, it _will_ match because the object is simply converted to a string.  To test the properties in paws, include 'paws.count' and 'paws.color' specifically in `propsToTest`.
 
 ### <a name="options" />options
 An object used to set the option values for match and filter functions.  
@@ -292,9 +316,12 @@ var options = {
 
   matchIfPObjPropMissing: false,  // matches if `pObj` property doesn't exist
   matchIfTObjPropMissing: false,  // matches if `tObj` property doesn't exist
+  matchIfBothPropMissing: false,  // match on this property if BOTH tObj & pObj are missing
 
   variablesAllowed: false,  // replace var names with var values in `pObj` props 
-  getVariables: undefined,  // function to call to get object of var names/vals
+  variablesInPObj: false,   // substitute variables in prop value in pattern obj
+  variablesInTObj: false,   // substitute variables in prop value in target obj
+  variables: {},            // object of variables with var names as keys
   variablesStartStr: '~',   // beg str in pObj prop value to find the var name  
   variablesEndStr: null,    // end str in pObj prop value to find the var name
 
@@ -303,7 +330,7 @@ var options = {
 ```
 
 ##### <a name="regExpMatch" />regExpMatch
-Property on the [`options`](#options) object that if equal to `true`, fos filter and matches functions will use the `pObj` property value as a regular expression to test against the `tObj` property.  If the pattern object property value is a string, the string will be converted to a javascript regular expression.  
+Property on the [`options`](#options) object that if equal to `true`, `filter` and `matches` functions will use the `pObj` property value as a regular expression to test against the `tObj` property.  If the pattern object property value is a string, the string will be converted to a javascript regular expression.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -403,7 +430,7 @@ matchFn(pObj, fido);  // true
 ```
 
 ##### <a name="regExpAnchorStart" />regExpAnchorStart
-Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in fos matches and filter functions, it includes a '^' prepended to `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the ^ can be included in the regular expression; eg, /^gray/.  
+Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in matches and filter functions, it includes a '^' prepended to `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the ^ can be included in the regular expression; eg, /^gray/.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -427,7 +454,7 @@ var options = {regExpMatch: true}
 ```
 
 ##### <a name="regExpAnchorEnd" />regExpAnchorEnd
-Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in fos matches and filter functions, it includes a '$' appended to the end of the `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the $ can be included in the regular expression; eg, /gray$/.  
+Property on the [`options`](#options) object that if equal to `true` __and__ [`regExpMatch`](#regExpMatch)===`true` __and__ the `pObj` property value is a string, then when the `pObj` value is converted from a string to a regular expression object in matches and filter functions, it includes a '$' appended to the end of the `pObj` string value.  This option value is only considered where the `pObj` is a string.  If the `pObj` property value is a regular expression object, then the $ can be included in the regular expression; eg, /gray$/.  
   - valid values: `true`,`false`
   - default: `false`
 
@@ -542,9 +569,71 @@ var request = {path: '/pets?role=guarddog', breed: 'chihuahua'}
 
 ```
 
+##### <a name="matchIfBothPropMissing" />matchIfBothPropMissing
+Property on the [`options`](#options) object that if equal to `true`, `filter` and `matches` functions will return `true`for the given property's match test if the property being tested does not exist on BOTH `pObj` and `tObj`. 
+  - valid values: `true`,`false`
+  - default: `false`
 
-##### <a name="variablesAllowed" />variablesAllowed
-Property on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` property values with their respective variable values from [`getVariables`](#getVariables).  The varible names on the `pObj` property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
+If `matchIfTObjMissing` &/or `matchIfPObjMissing` is set to `true`, then the match will still return `true` if either the tObj or pObj property is missing, respectively, even if both are not missing. 
+
+Example: 
+
+```javascript
+it('should return true if properties missing in both pObj & tObj', 
+  function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        // matchIfTObjPropMissing: false   // default is false
+        // matchIfPObjPropMissing: false   // default is false
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(true); 
+  });
+
+it('should return false if property exists in either pObj & tObj' + 
+   'and matchIf_ObjPropMissing is false', function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        // matchIfTObjPropMissing: false   // default is false
+        // matchIfPObjPropMissing: false   // default is false
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"tail":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(false);
+
+      pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      tObj = {"prop1":"abc","prop2":{"cat":{"tail":"brown"}}};
+      f(pObj, tObj).should.equal(false);
+  });
+
+it('should return true if property exists in either pObj & tObj' + 
+   'and matchIf_ObjPropMissing is true', function() {
+      var options = {
+        matchIfBothPropMissing:true, 
+        matchIfTObjPropMissing: true,   
+        matchIfPObjPropMissing: true   
+      }; 
+      var props = ["prop1",'prop2.cat.tail'];
+      var pObj = {"prop1":"abc","prop2":{"cat":{"tail":"purple"}}};
+      var tObj = {"prop1":"abc","prop2":{"cat":{"nose":"brown"}}};
+      var f = fos.makeMatchFn(props,options);
+      f(pObj, tObj).should.equal(true);
+
+      pObj = {"prop1":"abc","prop2":{"cat":{"nose":"purple"}}};
+      tObj = {"prop1":"abc","prop2":{"cat":{"tail":"brown"}}};
+      f(pObj, tObj).should.equal(true);
+  });
+
+```
+
+
+##### <a name="variables" />variables (`variablesInPObj`, `variablesInTObj`)
+`variablesInPObj` and `variablesInTObj` are properties on the [`options`](#options) object that if equal to `true`, replaces strings that are recognized as variable names in `pObj` &/or `tObj` property values respectively with their respective variable values from [`variables`](#variables).  The varible names on the property values is matched based on the [`variablesStartStr`](#variablesStartStr) and [`variablesEndStr`](#variablesStartStr). 
   - valid values: `true`,`false`
   - default: `false`
 
@@ -562,47 +651,55 @@ var fido ={
 
 var options =  
     {regExpMatch: true,
-     variablesAllowed:true,
-     variablesStartStr:"~",
-     variablesEndStr: "#",
-     getVariables:  function(cb) {
-       return cb(null, {grayColor: /gr[a,e]y/}); 
-    }};
+     variablesInPObj:true, 
+     variablesStartStr:"+",
+     variablesEndStr: ":",
+     variables: {grayColor: /gr[a,e]y/i}
+    };
+
 
 // variable name is identified between variablesStartStr(~) and variablesEndStr(#)
-//   and replaced with that name from getVariables (grayColor => /gr[a,e]y/)
-var pObj = {paws:{color: '~grayColor#'},tail:{color:'~grayColor#'}};  
+//   and replaced with that name from variables (grayColor => /gr[a,e]y/)
+var pObj = {paws:{color: '+grayColor:'}, tail:{color: '+grayColor:'}};  
 
-var propsToTest = ['paws.color', 'tail.color'];
+var propsToTest = ['paws.color','tail.color'];
 
 var matchFn = fos.makeMatchFn(propsToTest, options);
 
 matchFn(pObj, fido) // true;
 
-// and works the same with `filter` for an array of objects
+// Or substitue variables in both pObj and tObj
+
+var options =  {variables:  {youngDog: "puppy", littleCuteUn: "puppy"}};
+
+var props = 
+  {"prop1":
+    {"variablesInTObj":true,
+     "variablesInPObj":true,
+     "variablesStartStr":"/:"}};
+var pObj = {"prop1":"/:littleCuteUn"};
+var tObj = {"prop1":"/:youngDog"};
+var f = fos.makeMatchFn(props, options);
+f(pObj, tObj);  //true
+
 
 ```
 
-##### <a name="getVariables" />getVariables
-Property on the [`options`](#options) object that defines a function which, if [`variablesAllowed`](#variablesAllowed) is `true`, takes a callback which is called with an error (null if no error) and an object of the form : 
+##### <a name="variables" />variables
+Property on the [`options`](#options) object that defines the variable names and values.
 
-```javascript
-{variable1Name: `variable1Value`,
-  variable2Name: `variable2Value`}
-```
-
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variablesInPObj`](#variablesInPObj) for an example.
 
 ##### <a name="variablesStartStr" />variablesStartStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesAllowed`](#variablesAllowed) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the starting position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`variables`](#variables). 
 
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variablesInPObj`](#variablesInPObj) for an example.
 
 
 ##### <a name="variablesEndStr" />variablesEndStr
-Property on the [`options`](#options) object that defines a string which, if [`variablesAllowed`](#variablesAllowed) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`getVariables`](#getVariables). 
+Property on the [`options`](#options) object that defines a string which, if [`variablesInPObj`](#variablesInPObj) === `true` or [`variablesInTObj`](#variablesInTObj) === `true`, determines the ending position of a variable name string in a `pObj` property value that will be replaced with the variable value string of the respective variable name obtained from [`variables`](#variables). 
 
-See [`variablesAllowed`](#variablesAllowed) for an example.
+See [`variables`](#variables) for examples.
 
 
 ##### <a name="propMatchFn" />propMatchFn
@@ -652,6 +749,136 @@ filter(pObj, pets);
 
 ```
 
+<a name="setOptionsOnProps"></a>
+#### setOptionsOnProps(propsToTest, options)
+Helper function to modify the [`propsToTest`](#propsToTest) object setting options on each property. `setOptionsOnProps` is called by `makeFilterFn` and `makeMatchFn` so `setOptionsOnProps` does not need to be called prior to those.  `setOptionsOnProps` is exposed to see the options set for each property.  As noted in makeFilterFn and makeMatchFn, `options` precedence is (1) `propsToTest` `options` values if set (2) `options` as included here as a parameter, otherwise (3) `options` default values.  
+
+__Arguments__
+* [`propsToTest`](#propsToTest)
+* options: Object with any of [`options`](#options) properties.
+
+__Examples__
+```javascript
+var propsToTest = [
+  'method',
+  'query.filter',
+  {name:'query.limit', regExpMatch: false}];
+var options = {regExpMatch: true}; 
+
+var updatedProps = fos.setOptionsOnProps(propsToTest, options); 
+
+console.log(updatedProps); 
+/*
+[ { name: 'method',
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
+    variablesInPObj: false,
+    variablesInTObj: false,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null,
+    regExpMatch: true },
+  { name: 'query.filter',
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
+    variablesInPObj: false,
+    variablesInTObj: false,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null,
+    regExpMatch: true },
+  { name: 'query.limit',
+    regExpMatch: false,
+    regExpReverse: false,
+    regExpIgnoreCase: false,
+    regExpAnchorStart: false,
+    regExpAnchorEnd: false,
+    matchIfPObjPropMissing: false,
+    matchIfTObjPropMissing: false,
+    matchIfBothPropMissing: false,
+    variables: {},
+    variablesInPObj: false,
+    variablesInTObj: false,
+    variablesStartStr: '~',
+    variablesEndStr: null,
+    propMatchFn: null } ]
+*/
+
+// Above can just be informational if needed or can be fed into makeFilterFn or makeMatchFn
+
+var filter = makeFilterFn(updatedProps);
+
+// which would have the same result as this: 
+var filter = makeFilterFn(propsToTest, options);
+
+
+```
+
+<a name="setNestedPropOptions"></a>
+#### setNestedPropOptions(propsToTest, propOptions)
+Helper function to modify `propsToTest` so that options for each property cascade from higher level properties in `propOptions` to lower level properties. propsToTest can then be used as input to makeFilterFn or makeMatchFn. (Note that only _options_ are cascaded. _Which_ properties is not cascaded.  See [`propsToTest`](#propsToTest)). 
+
+__Arguments__
+* [`propsToTest`](#propsToTest)
+* propOptions: A literal object with propNames as keys and [`options`](#options) as values.
+
+__Examples__
+```javascript
+var propsToTest = [
+  'method',
+  'query',
+  'query.filter',
+  {name:'query.limit', regExpMatch: false},
+  'query.filter.sort'];
+var propOptions = {
+  'query': {regExpMatch: true},  // cascade this option to all 'query.x' where isn't set on lower levels
+  'query.limit': {variablesInTObj: true}
+}; 
+
+var updatedProps = fos.setNestedPropOptions(propsToTest, propOptions); 
+
+console.log(updatedProps); 
+/*
+{ method: {},
+  query: { regExpMatch: true },
+  'query.filter': { regExpMatch: true },
+  'query.limit': { regExpMatch: false, variablesInTObj: true },
+  'query.filter.sort': { regExpMatch: true } }
+*/
+
+var options = {regExpReverse: true}; 
+var filter = makeFilterFn(propsToTest, options);
+// filter will test properties in propsToTest with those options 
+//   and defaulting to regExpReverse to true across all of them 
+//  (so for all props in propsToTest because it isn't set in any of the properties)  
+//   Any option that isn't set in propsToTest or options will be set 
+//   according to global options default - see options section. 
+...
+
+```
+
+<a name="performance"></a>
+#### Performance
+An overall summary of benchmark performance tests can be found [here](https://github.com/tonybranfort/filter-objects/blob/master/performance/perf-overall-summary.txt).  Details can be found in the performance/results folder of the perf-results branch.
+
+Some general observations from the performance benchmark tests: 
+* __Always use `makeFilterFn` to create your filter__ if possible rather than calling `filter` directly.  Running `matches` without `makeMatchFn` (on which `filter` is based) can run about 10 times slower. 
+* __95% of response times for `filter` are less than .10 μs and 15 μs per property__ (μs = microsecond = .001 millisecond) on a fresh build smallest available aws Linux server (see note below on Node 5.4).  This means that if filtering on one property, each filtered object responded within .10 μs and 15 μs 95% of the time.  If filtering on 10 properties, it would have responded within 1 μs and 150 μs per object 95% of the time (10 x).  
+* __Depth of properties matters.__  This is true for both hard-coded array filters (using javascript Array.prototype.filter directly) or using filter-objects.  Filtering on bojects with properties going from 1 deep and to 4 deep increased the result time anywhere from 0 to almost 6 times with most response times increasing 2-3 times (again, looking at 95th percentile).
+* __Still call Array.prototype.filter directly if you can and if performance is paramount.__  filter-objects adds performance overhead to calling Array.prototype.filter directly - as would be expected.  The 95th percentile response time increased from .07-2.1 μs per filter property for calling Array.prototype.filter directly to 1.4 μs to 14 μs for the same filters with filter-objects (again - using makeFilterFn). 
+* __Testing on Node 5.4 showed response time spikes__ up to 300 microseconds (95th percentile) per filter property. It clearly stands out when looking at the results summary but no further information if this is just an anomoly in the testing or is actually related to Node 5.4. 
 
 
 
