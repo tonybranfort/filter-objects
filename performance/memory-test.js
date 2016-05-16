@@ -4,6 +4,8 @@ var fos = require('../lib/index.js');
 var should = require('should');
 // var profiler = require('v8-profiler');
 
+// run with 'node --expose-gc performance/memory-test.js'
+
 var memoryUsage = [];
 
 var matchFn = fos.makeMatchFn(['prop1']);
