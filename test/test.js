@@ -742,6 +742,45 @@ describe('When the makeMatchFn is used , ', function(){
     });
   }); // end of For deep properties (more than one deep)
 
+  describe('Inherited properties', function(){
+    it('should be included by default', 
+      function() {
+        var props = ["prop1"];
+        var o = {"prop1":"abc"};
+        var pObj = Object.create(o); 
+        var tObj = {"prop1":"abc"};
+        var f = fos.makeMatchFn(props);
+        f(pObj, tObj).should.equal(true); 
+    });
+    it('should be included by default with deep properties', 
+      function() {
+        var props = ["prop1.cat"];
+        var o = {"prop1":{"cat":"gray"}};
+        var pObj = Object.create(o); 
+        var tObj = {"prop1":{"cat":"gray"}};
+        var f = fos.makeMatchFn(props);
+        f(pObj, tObj).should.equal(true);
+    });
+    it('should not be included if doNotCheckInherited is true', 
+      function() {
+        var props = ["prop1"];
+        var o = {"prop1":"abc"};
+        var pObj = Object.create(o); 
+        var tObj = {"prop1":"abc"};
+        var f = fos.makeMatchFn(props, {doNotCheckInherited: true});
+        f(pObj, tObj).should.equal(false); 
+    });
+    it('should not be considered missing if doNotCheckInherited is true', 
+      function() {
+        var props = ["prop1"];
+        var o = {"prop1":"abc"};
+        var pObj = Object.create(o); 
+        var tObj = {"prop1":"abc"};
+        var options = {doNotCheckInherited: true, matchIfPObjPropMissing: true}
+        var f = fos.makeMatchFn(props, options);
+        f(pObj, tObj).should.equal(true); 
+    });
+  }); // end of describe inherited properties
 
   describe('For properties with variables', function(){
     it('it should replace the variable and return true for match', 
