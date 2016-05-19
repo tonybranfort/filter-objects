@@ -1,3 +1,12 @@
+# v2.1.0
+* Fix [Issue #4](https://github.com/tonybranfort/filter-objects/issues/4): Inherited properties not being checked for matches and filter.  This __could be a breaking change__ if you aren't expecting inherited properties to be checked.  If so, use doNotCheckInherited option.
+
+New Features
+* doNotCheckInherited: Option that allows inherited properties to not be checked for matches and filter (those properties will be considered missing). The default, with Issue # 4 fix, is to include inherited properties; ie doNotCheckInherited=false. 
+
+Other
+* [Performance test results](https://github.com/tonybranfort/filter-objects/blob/master/performance/perf-overall-summary.txt) for v2.0.0 and v2.1.0 added. 
+
 # v2.0.0
 Breaking Changes
 * `getVariablesFn` option removed and replaced with `variables` option.  (See [Issue #3](https://github.com/tonybranfort/filter-objects/issues/3))
