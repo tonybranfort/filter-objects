@@ -8,7 +8,7 @@ Features:
 * Simple 'pattern object' approach eg: `filter({fido: color: 'black'},arrayOfPetObjs)`
 * Deep object property testing
 * Can define filter properties & options prior to filter call for better performance
-* Filter with regular expressions - on either the searching object or objects in the array
+* Filter with regular expressions - on either the pattern object or targe objects 
 * Filter options and functions can be defined for each object property being tested
 * Custom filter functions
 * Variables in the pattern and target objects
@@ -324,6 +324,8 @@ var options = {
   variables: {},            // object of variables with var names as keys
   variablesStartStr: '~',   // beg str in pObj prop value to find the var name  
   variablesEndStr: null,    // end str in pObj prop value to find the var name
+
+  doNotCheckInherited: false, // do not include inherited properties
 
   propMatchFn: null         // function to call instead of std match function
 }; 
@@ -701,6 +703,37 @@ Property on the [`options`](#options) object that defines a string which, if [`v
 
 See [`variables`](#variables) for examples.
 
+##### <a name="doNotCheckInherited" />doNotCheckInherited
+Property on the [`options`](#options) object that if `true` will cause `matches` and `filter` functions to not include inherited properties for matching of pattern &/or target objects.  
+
+  - valid values: `true`,`false`
+  - default: `false`
+
+Example: 
+```javascript
+var props = ["prop1"];
+var o = {"prop1":"abc"};
+var pObj = Object.create(o); 
+var tObj = {"prop1":"abc"};
+// doNotCheckInherited is set to true at global level with this call so 
+//    all inherited properties will be ignored (considered missing) 
+//    on both tObj and pObj. 
+// doNotCheckInherited could also be set at the property level on 
+//    either or both pObj and tObj like all options.
+var f = fos.makeMatchFn(props, {doNotCheckInherited: true});
+f(pObj, tObj); // false
+
+// inherited properties are considered missing if doNotCheckInherited
+var props = ["prop1"];
+var o = {"prop1":"abc"};
+var pObj = Object.create(o); 
+var tObj = {"prop1":"abc"};
+var options = {doNotCheckInherited: true, matchIfPObjPropMissing: true}
+var f = fos.makeMatchFn(props, options);
+f(pObj, tObj); // true 
+
+
+```
 
 ##### <a name="propMatchFn" />propMatchFn
 Property on the [`options`](#options) object that defines a function to replace the match function between `pObj` and `tObj` properties.   
