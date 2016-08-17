@@ -1,6 +1,6 @@
 {
   "name": "filter-objects",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Filter or match objects simply using a pattern object",
   "main": "lib/index.js",
   "scripts": {

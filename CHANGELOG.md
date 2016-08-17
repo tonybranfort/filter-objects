@@ -1,3 +1,6 @@
+# v2.1.1
+* README typo correction
+
 # v2.1.0
 * Fix [Issue #4](https://github.com/tonybranfort/filter-objects/issues/4): Inherited properties not being checked for matches and filter.  This __could be a breaking change__ if you aren't expecting inherited properties to be checked.  If so, use doNotCheckInherited option.
 

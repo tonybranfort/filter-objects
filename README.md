@@ -5,7 +5,7 @@
 ###Use a pattern object to simply filter an array of objects or match on a single object.  
 
 Features: 
-* Simple 'pattern object' approach eg: `filter({fido: color: 'black'},arrayOfPetObjs)`
+* Simple 'pattern object' approach eg: `filter({fido: {color: 'black'}},arrayOfPetObjs)`
 * Deep object property testing
 * Can define filter properties & options prior to filter call for better performance
 * Filter with regular expressions - on either the pattern object or targe objects 
